@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://dn5pi8iifwba1"]
+
+[ext_resource type="PackedScene" uid="uid://c33eejqyhtjv0" path="res://ui/game/sabotage.tscn" id="1_6v1kb"]
+
+[sub_resource type="Gradient" id="Gradient_6v1kb"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.383597, 0.383597, 0.383597, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_m5y38"]
+gradient = SubResource("Gradient_6v1kb")
+
+[node name="Help" instance=ExtResource("1_6v1kb")]
+offset_right = 0.0
+offset_bottom = 0.0
+texture_normal = SubResource("GradientTexture1D_m5y38")

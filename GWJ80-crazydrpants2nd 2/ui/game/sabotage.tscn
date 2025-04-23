@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://c33eejqyhtjv0"]
+
+[ext_resource type="Script" uid="uid://cqovcij26mdmf" path="res://ui/pause_menu/interaction.gd" id="1_asiqi"]
+
+[sub_resource type="Gradient" id="Gradient_6v1kb"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.383597, 0.383597, 0.383597, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_asiqi"]
+gradient = SubResource("Gradient_6v1kb")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tfo3w"]
+bg_color = Color(0.203922, 0.203922, 0.203922, 0.392157)
+
+[node name="Sabotage" type="TextureButton"]
+offset_right = 256.0
+offset_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.0
+texture_normal = SubResource("GradientTexture1D_asiqi")
+texture_pressed = SubResource("GradientTexture1D_asiqi")
+texture_hover = SubResource("GradientTexture1D_asiqi")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("1_asiqi")
+
+[node name="Label" type="Label" parent="."]
+z_index = 1
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_tfo3w")
+text = "Get Vinny's letter to 
+Romulus to sabotage"

@@ -1,0 +1,9 @@
+dee_character: I have decided to give Cee a pair of ice skates.
+- I changed my mind, you should get him a briefcase.
+	dee_character: I am sure he will appreciate my dedication to work. 
+	dee_character: Thanks for the advice! My relationship with Cee means a lot to me. I don't want to screw this present up.
+	[signal arg="dee_briefcase"]
+- Yeah, ice skates seem like the correct choice.
+	dee_character: He can never have enough skates.
+	dee_character: Thanks for the advice! My relationship with Cee means a lot to me. I don't want to screw this present up.
+	[signal arg="dee_skates"]

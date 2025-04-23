@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://boxptffl7bp2j"]
+
+[sub_resource type="GDScript" id="GDScript_6wcxv"]
+script/source = "extends Node
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	Dialogic.start(\"trial_timeline\")
+"
+
+[node name="Node" type="Node"]
+script = SubResource("GDScript_6wcxv")
