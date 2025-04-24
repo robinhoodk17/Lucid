@@ -22,4 +22,4 @@ func _start_game() -> void:
 	get_tree().paused = true
 	LoadingScreen.start_load()
 	await LoadingScreen.finished_entering
-	get_tree().change_scene_to_file("uid://dgmox4dyoefyf")
+	get_tree().change_scene_to_file("res://game/scenes/Bigger building made with csg boxeszip/new bigger Building .tscn")

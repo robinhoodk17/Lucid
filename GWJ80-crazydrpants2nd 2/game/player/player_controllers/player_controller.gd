@@ -15,6 +15,7 @@ class_name player_controller
 @export var jump_velocity : float= 7.0
 @export var hover_delay : float = .8
 const ROTATION_SPEED : float = 6.0
+var hovering : bool = false
 var disabled : bool = false
 @export_category("Camera controls")
 @export var offset : Vector3 = Vector3(0.0, 1.5, 0.0)
@@ -95,10 +96,16 @@ func _physics_process(delta: float) -> void:
 		player.velocity += player.get_gravity() * delta * 1.5 / Globals.time_scale
 		current_speed = gliding_speed
 
-	
-	if !fly_action.value_bool:
-		if hover_timer.is_stopped():
-			player.velocity.y = 0.0
+	if Input.is_action_just_pressed("hover"):
+		if hovering == false:
+			hovering = true
+		elif hovering == true:
+			hovering = false
+	if hovering == true:
+		player.velocity.y = 0
+	#if !fly_action.value_bool:
+		#if hover_timer.is_stopped():
+			#player.velocity.y = 0.0
 	#if fly_action.is_triggered():
 		#player.velocity.y = jump_velocity
 		#hover_timer.start(hover_delay)
@@ -151,6 +158,7 @@ func _physics_process(delta: float) -> void:
 			animation_player.play("flap")
 
 
+
 func position_camera_behind_player() -> void:
 	_tween_rotation(playermodel.get_rotation().y,  reset_duration)
 
@@ -192,8 +200,10 @@ func handle_time_freeze() -> void:
 func handle_jump() -> void:
 	if disabled:
 		return
+	hovering = false
 	player.velocity.y = jump_velocity
 	hover_timer.start(hover_delay)
+	
 
 
 func handle_interaction() -> void:

@@ -6,8 +6,8 @@
 [ext_resource type="Script" uid="uid://dpcdhnh3h5mdb" path="res://ui/game/time_travel_prompt.gd" id="3_b3mny"]
 [ext_resource type="Script" uid="uid://e3vnvul07ssq" path="res://ui/game/inputs.gd" id="4_lkn3m"]
 [ext_resource type="Resource" uid="uid://dig8hnr4lgk3o" path="res://input/time_freeze.tres" id="4_pc3ud"]
-[ext_resource type="Resource" uid="uid://b1fqbn0g2j3ff" path="res://input/fly.tres" id="5_2g71p"]
 [ext_resource type="Resource" uid="uid://dn3lfk06ljxi0" path="res://input/reset_camera.tres" id="6_b3mny"]
+[ext_resource type="Resource" uid="uid://chr8jlfgt04eh" path="res://input/hover.tres" id="7_vor7y"]
 [ext_resource type="Script" uid="uid://cqa5fm02ux7n" path="res://ui/game/drop_prompt.gd" id="9_vor7y"]
 [ext_resource type="Script" uid="uid://hpc01cqfro6n" path="res://ui/game/karma.gd" id="9_yw7c2"]
 [ext_resource type="Resource" uid="uid://dr3iky0gcpwi5" path="res://input/interact.tres" id="10_w08ax"]
@@ -114,8 +114,8 @@ layout_mode = 2
 layout_mode = 2
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 20
-text = "Down
-(hold)"
+text = "Hover
+(toggle)"
 
 [node name="Label" type="RichTextLabel" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -130,9 +130,10 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 script = ExtResource("4_lkn3m")
-action = ExtResource("5_2g71p")
+action = ExtResource("7_vor7y")
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
