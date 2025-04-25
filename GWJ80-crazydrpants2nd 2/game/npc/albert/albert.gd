@@ -29,7 +29,7 @@ func handle_dialogue_start(_player_controller : player_controller) -> void:
 				item.global_position = Vector3(0,1000,0)
 				return
 
-		start_dialogue("waiting_for_cheese")
+		start_dialogue("albert_waiting_cheese")
 		return
 
 	if Globals.current_time > 240.0:

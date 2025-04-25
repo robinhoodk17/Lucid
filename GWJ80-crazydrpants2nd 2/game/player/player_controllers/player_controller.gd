@@ -8,6 +8,7 @@ class_name player_controller
 @export var camera_control : GUIDEAction
 @export var interact_action : GUIDEAction
 @export var reset_camera : GUIDEAction
+@export var hover_action : GUIDEAction
 
 @export_category("Player Movement")
 @export var speed : float = 3.0
@@ -54,6 +55,7 @@ func  _ready() -> void:
 	time_freeze.triggered.connect(handle_time_freeze)
 	fly_action.triggered.connect(handle_jump)
 	interact_action.triggered.connect(handle_interaction)
+	hover_action.triggered.connect(handle_hover)
 	Globals.restart.connect(restarted)
 	await get_tree().process_frame
 	original_position = player.global_position
@@ -95,14 +97,9 @@ func _physics_process(delta: float) -> void:
 	if not player.is_on_floor():
 		player.velocity += player.get_gravity() * delta * 1.5 / Globals.time_scale
 		current_speed = gliding_speed
+		if hovering:
+			player.velocity.y = 0
 
-	if Input.is_action_just_pressed("hover"):
-		if hovering == false:
-			hovering = true
-		elif hovering == true:
-			hovering = false
-	if hovering == true:
-		player.velocity.y = 0
 	#if !fly_action.value_bool:
 		#if hover_timer.is_stopped():
 			#player.velocity.y = 0.0
@@ -195,6 +192,10 @@ func handle_time_freeze() -> void:
 			if !interaction_detection.showing_which.freezable:
 				return
 			interaction_detection.showing_which.freeze_in_time()
+
+
+func handle_hover() -> void:
+	hovering = !hovering
 
 
 func handle_jump() -> void:

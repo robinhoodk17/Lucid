@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bahvf2v6h6slc"]
+[gd_scene load_steps=11 format=3 uid="uid://bahvf2v6h6slc"]
 
 [ext_resource type="Script" uid="uid://bpq84bf3t0mv1" path="res://game/player/player_controllers/player_controller.gd" id="1_nv744"]
 [ext_resource type="Resource" uid="uid://dig8hnr4lgk3o" path="res://input/time_freeze.tres" id="2_5df8n"]
@@ -7,6 +7,7 @@
 [ext_resource type="Resource" uid="uid://7bvnpytk6bwy" path="res://input/camera.tres" id="4_5df8n"]
 [ext_resource type="Resource" uid="uid://dr3iky0gcpwi5" path="res://input/interact.tres" id="5_bcob5"]
 [ext_resource type="Resource" uid="uid://dn3lfk06ljxi0" path="res://input/reset_camera.tres" id="6_w85yc"]
+[ext_resource type="Resource" uid="uid://chr8jlfgt04eh" path="res://input/hover.tres" id="8_xqxmv"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_robka"]
 
@@ -21,6 +22,7 @@ fly_action = ExtResource("3_w85yc")
 camera_control = ExtResource("4_5df8n")
 interact_action = ExtResource("5_bcob5")
 reset_camera = ExtResource("6_w85yc")
+hover_action = ExtResource("8_xqxmv")
 offset = Vector3(0, 1.25, 0)
 
 [node name="SpringArm3D" type="SpringArm3D" parent="."]

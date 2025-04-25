@@ -13,11 +13,11 @@ func handle_dialogue_start(_player_controller) -> void:
 		start_dialogue("vinny_and_queen")
 		return
 		
-	if Globals.current_time > 300.0 and Globals.current_time < 360.0:
+	if Globals.current_time > 240.0 and Globals.current_time < 300.0:
 		start_dialogue("i_love_office_news_queen_bee")
 		return
 
-	if Globals.current_time > 360.0:
+	if Globals.current_time > 300.0:
 		if current_gamestate == gamestate.SABOTAGED:
 			start_dialogue("how_could_this_happen_queen_bee")
 			return
@@ -28,7 +28,7 @@ func handle_dialogue_start(_player_controller) -> void:
 	
 	if _player_controller.grabbing != null:
 		if _player_controller.grabbing.type == interactable.item_type.LETTER:
-			if Globals.quest_status["vinny"] == gamestate.NORMAL:
+			if vinny.current_gamestate == gamestate.NORMAL:
 				Globals.quest_started("vinny", gamestate.HELPED)
 				var item : Node3D = _player_controller.grabbing
 				item.drop()

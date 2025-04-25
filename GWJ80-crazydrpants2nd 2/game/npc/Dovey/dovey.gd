@@ -1,7 +1,7 @@
 extends NPC
 
 @export var romulus : NPC
-var quest_finished : bool = true
+var quest_finished : bool = false
 var player : player_controller
 
 func handle_dialogue_start(_player_controller) -> void:

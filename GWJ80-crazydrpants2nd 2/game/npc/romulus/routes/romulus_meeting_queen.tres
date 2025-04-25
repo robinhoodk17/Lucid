@@ -4,6 +4,6 @@
 
 [resource]
 script = ExtResource("1_43sk0")
-acceptable_states = Array[int]([0])
-route = "route1"
+acceptable_states = Array[int]([0, 1, 2])
+route = "romulus_meeting_queen"
 metadata/_custom_type_script = "uid://cea3ewphuupof"
