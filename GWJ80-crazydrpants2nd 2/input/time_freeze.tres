@@ -4,11 +4,11 @@
 
 [resource]
 script = ExtResource("1_n61tr")
-name = &"Violate causality"
+name = &"Dash/Violate causality"
 action_value_type = 0
 block_lower_priority_actions = true
 emit_as_godot_actions = false
 is_remappable = true
-display_name = "Violate causality"
+display_name = "Dash/Violate causality"
 display_category = ""
 metadata/_custom_type_script = "uid://c56e4jl2mxdir"

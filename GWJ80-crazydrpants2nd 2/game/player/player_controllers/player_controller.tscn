@@ -47,3 +47,6 @@ one_shot = true
 
 [node name="CameraTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="DashTimer" type="Timer" parent="."]
+one_shot = true

@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dgaexk2mqn6j8"]
+[gd_scene load_steps=7 format=3 uid="uid://dgaexk2mqn6j8"]
 
 [ext_resource type="Script" uid="uid://ctk7duxndd7bf" path="res://game/player/player_ready.gd" id="1_8soms"]
 [ext_resource type="PackedScene" uid="uid://dlhyqkhdji50i" path="res://game/player/Butterfly.tscn" id="2_a4w0n"]
@@ -10,6 +10,9 @@ radius = 0.2
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6sduc"]
 size = Vector3(2.5, 2, 3.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_8soms"]
+size = Vector3(0.01, 0.01, 0.5)
 
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
@@ -39,5 +42,15 @@ script = ExtResource("3_5fytw")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="playermodel/InteractionDetection"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.572418)
 shape = SubResource("BoxShape3D_6sduc")
+
+[node name="DashTrail" type="Node3D" parent="playermodel"]
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="playermodel/DashTrail"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.100723, 0.491023)
+mesh = SubResource("BoxMesh_8soms")
+
+[node name="TrailTimer" type="Timer" parent="."]
+one_shot = true
 
 [editable path="playermodel/Butterfly"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bojsla6nqcf03"]
+[gd_scene load_steps=12 format=3 uid="uid://bojsla6nqcf03"]
 
 [ext_resource type="Script" uid="uid://bbe25uxhy3b0c" path="res://ui/game/game_ui.gd" id="1_67una"]
 [ext_resource type="Script" uid="uid://4we2y064qmhf" path="res://ui/game/timer.gd" id="2_d7okr"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://dpcdhnh3h5mdb" path="res://ui/game/time_travel_prompt.gd" id="3_b3mny"]
 [ext_resource type="Script" uid="uid://e3vnvul07ssq" path="res://ui/game/inputs.gd" id="4_lkn3m"]
 [ext_resource type="Resource" uid="uid://dig8hnr4lgk3o" path="res://input/time_freeze.tres" id="4_pc3ud"]
-[ext_resource type="Resource" uid="uid://dn3lfk06ljxi0" path="res://input/reset_camera.tres" id="6_b3mny"]
 [ext_resource type="Resource" uid="uid://chr8jlfgt04eh" path="res://input/hover.tres" id="7_vor7y"]
 [ext_resource type="Script" uid="uid://cqa5fm02ux7n" path="res://ui/game/drop_prompt.gd" id="9_vor7y"]
 [ext_resource type="Script" uid="uid://hpc01cqfro6n" path="res://ui/game/karma.gd" id="9_yw7c2"]
@@ -133,14 +132,13 @@ script = ExtResource("4_lkn3m")
 action = ExtResource("7_vor7y")
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
-visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 20
-text = "Camera:"
+text = "Dash:"
 
 [node name="Label2" type="RichTextLabel" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
@@ -155,7 +153,7 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 script = ExtResource("4_lkn3m")
-action = ExtResource("6_b3mny")
+action = ExtResource("4_pc3ud")
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2

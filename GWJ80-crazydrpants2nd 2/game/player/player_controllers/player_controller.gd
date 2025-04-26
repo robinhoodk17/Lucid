@@ -9,13 +9,18 @@ class_name player_controller
 @export var interact_action : GUIDEAction
 @export var reset_camera : GUIDEAction
 @export var hover_action : GUIDEAction
+@export var dash_action : GUIDEAction
 
 @export_category("Player Movement")
 @export var speed : float = 3.0
 @export var gliding_speed : float = 6.0
 @export var jump_velocity : float= 7.0
 @export var hover_delay : float = .8
+@export var dash_speed_multiplier : float = 5.0
+@export var dash_duration : float = 0.25
+@export var dash_cooldown : float = 1.0
 const ROTATION_SPEED : float = 6.0
+var current_dash_multiplier : float = 1.0
 var hovering : bool = false
 var disabled : bool = false
 @export_category("Camera controls")
@@ -44,6 +49,9 @@ var player_animation_state : animation_state = animation_state.IDLE
 @onready var player: CharacterBody3D = $".."
 @onready var spring_arm: SpringArm3D = $SpringArm3D
 @onready var interaction_detection: Area3D = $"../playermodel/InteractionDetection"
+@onready var trail_timer: Timer = $"../TrailTimer"
+@onready var dash_trail: Node3D = $"../playermodel/DashTrail"
+@onready var dash_timer: Timer = $DashTimer
 
 var original_position : Vector3
 var original_rotation : Basis
@@ -51,6 +59,7 @@ var dampened_y_array : Array[float] = [0.0, 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,
 var current_y : int = 0
 var averaged_y : float = 0.0
 func  _ready() -> void:
+	trail_timer.timeout.connect(turn_off_trail)
 	top_level = true
 	time_freeze.triggered.connect(handle_time_freeze)
 	fly_action.triggered.connect(handle_jump)
@@ -66,7 +75,11 @@ func  _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	var current_speed : float = speed
+	var current_speed : float = speed * current_dash_multiplier
+	if !trail_timer.is_stopped():
+		var duration_left_in_seconds : float = (dash_speed_multiplier - 1.0)/dash_duration
+		current_dash_multiplier = move_toward(current_dash_multiplier,1.0, duration_left_in_seconds * delta)
+		
 	if reset_action_current_cooldown < reset_action_cooldown:
 		reset_action_current_cooldown += delta
 	dampened_y_array[current_y] = player.global_position.y
@@ -96,7 +109,7 @@ func _physics_process(delta: float) -> void:
 		spring_arm.rotation.x = clamp(spring_arm.rotation.x - camera_rotation.y,-0.6,0.4)
 	if not player.is_on_floor():
 		player.velocity += player.get_gravity() * delta * 1.5 / Globals.time_scale
-		current_speed = gliding_speed
+		current_speed = gliding_speed  * current_dash_multiplier
 		if hovering:
 			player.velocity.y = 0
 
@@ -155,7 +168,6 @@ func _physics_process(delta: float) -> void:
 			animation_player.play("flap")
 
 
-
 func position_camera_behind_player() -> void:
 	_tween_rotation(playermodel.get_rotation().y,  reset_duration)
 
@@ -179,6 +191,10 @@ func rotate_model(direction: Vector3, delta : float) -> void:
 	playermodel.basis = lerp(playermodel.basis, Basis.looking_at(direction), 10.0 * delta)
 
 
+func turn_off_trail() -> void:
+	dash_trail.hide()
+
+
 func restarted() -> void:
 	player.global_position = original_position
 	player.global_basis = original_rotation
@@ -189,9 +205,27 @@ func handle_time_freeze() -> void:
 		return
 	if interaction_detection.showing_which != null:
 		if interaction_detection.showing_which.is_in_group("item"):
-			if !interaction_detection.showing_which.freezable:
+			if interaction_detection.showing_which.freezable:
+				interaction_detection.showing_which.freeze_in_time()
 				return
-			interaction_detection.showing_which.freeze_in_time()
+	if dash_timer.is_stopped():
+		dash_trail.show()
+		trail_timer.start(dash_duration)
+		current_dash_multiplier = dash_speed_multiplier
+		doFullCircle()
+		dash_timer.start(dash_cooldown)
+
+
+func doFullCircle(axis : String = "z"):
+	randomize()
+	var leftorRight : int = -1
+	if randi_range(0,1):
+		leftorRight = 1
+	var target_rotation = playermodel.rotation
+	if axis == "z":
+		target_rotation.z += PI*2 * leftorRight
+	var rotate_tween = get_tree().create_tween()
+	rotate_tween.tween_property(playermodel, "rotation", target_rotation, dash_duration).set_trans(Tween.TRANS_LINEAR)
 
 
 func handle_hover() -> void:
@@ -204,7 +238,6 @@ func handle_jump() -> void:
 	hovering = false
 	player.velocity.y = jump_velocity
 	hover_timer.start(hover_delay)
-	
 
 
 func handle_interaction() -> void:
@@ -217,8 +250,10 @@ func handle_interaction() -> void:
 			grabbing.drop()
 			grabbing = null
 
+
 func reenable() -> void:
 	disabled = false
+
 
 func disable() -> void:
 	disabled = true
