@@ -1,0 +1,4 @@
+marty_character: What's up, champ? Wanna race?
+- Not now, Marty. Thanks
+- You bet!
+	[signal arg="start_race"]

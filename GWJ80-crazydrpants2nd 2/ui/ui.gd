@@ -71,6 +71,7 @@ func late_ready() -> void:
 		if child is UiPage:
 			child.hide()
 	show()
+	show_ui("MainMenu")
 
 
 func _unhandled_input(event: InputEvent) -> void:

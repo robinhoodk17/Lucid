@@ -30,6 +30,7 @@ GUIDE="*res://addons/guide/guide.gd"
 Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
 LoadingScreen="*res://ui/loading_screen.tscn"
 Global="*res://global.gd"
+Ui="*res://ui/ui.tscn"
 
 [debug]
 
@@ -50,6 +51,7 @@ directories/dch_directory={
 "jaws_character": "res://game/npc/jaws/jaws_character.dch",
 "mama_bear_character": "res://game/npc/bear/timelines/mama_bear_character.dch",
 "margarine_character": "res://game/player/margarine_character.dch",
+"marty_character": "res://game/npc/marty/timelines/marty_character.dch",
 "mee_hive": "res://game/npc/mee hive/timelines/mee_hive.dch",
 "ollie_character": "res://game/npc/ollie/ollie_character.dch",
 "ollie_time_travel": "res://game/npc/ollie/time_travel_timelines/ollie_time_travel.dch",
@@ -157,6 +159,7 @@ directories/dtl_directory={
 "romulus_too_busy_to_talk": "res://game/npc/romulus/timelines/romulus_too_busy_to_talk.dtl",
 "romulus_too_late_to_use_this": "res://game/npc/romulus/timelines/romulus_too_late_to_use_this.dtl",
 "romulus_will_publish_this_to_become_ceo": "res://game/npc/romulus/timelines/romulus_will_publish_this_to_become_ceo.dtl",
+"starting_race": "res://game/npc/marty/timelines/starting_race.dtl",
 "still_need_approval": "res://game/npc/barry/timelines/still_need_approval.dtl",
 "this_is_a_paper_shredder": "res://game/interactables/shredder/this_is_a_paper_shredder.dtl",
 "timeline": "res://game/quest/timeline.dtl",

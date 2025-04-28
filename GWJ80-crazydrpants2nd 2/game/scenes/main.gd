@@ -11,4 +11,4 @@ func _ready() -> void:
 
 func show_main_menu() -> void:
 	await get_tree().create_timer(0.5).timeout
-	$UI.show_ui("MainMenu")
+	#$UI.show_ui("MainMenu")

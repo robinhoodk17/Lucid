@@ -84,3 +84,14 @@ func append_frame_data(frame_data : Dictionary) -> void:
 			second_run.append(frame_data)
 		3:
 			return
+
+
+func change_scene(file_name : String):
+	if Ui.get_node("Game/Label") != null:
+		Ui.get_node("Game/Label").start_counting = false
+		print_debug("got UI")
+	Ui.get_node("PauseMenu").pausable = false
+	get_tree().paused = true
+	LoadingScreen.start_load()
+	await LoadingScreen.finished_entering
+	get_tree().change_scene_to_file(file_name)
