@@ -23,7 +23,7 @@ run/physics_ticks_per_second=30
 [autoload]
 
 Settings="*res://autoloads/settings.gd"
-Globals="*res://autoloads/globals.gd"
+Globals="*res://autoloads/globals.tscn"
 ProjectUISoundController="*res://addons/maaacks_ui_sound_controller/base/scenes/Autoloads/ProjectUISoundController.tscn"
 Utils="*res://autoloads/utils.gd"
 GUIDE="*res://addons/guide/guide.gd"

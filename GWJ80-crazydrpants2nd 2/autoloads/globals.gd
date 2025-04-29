@@ -7,6 +7,8 @@ extends Node
 signal post_ui_message(text: String)
 ## Emitted by UI/Controls when a action is remapped
 signal controls_changed(config: GUIDERemappingConfig)
+signal saved
+signal loaded
 signal found_item
 signal lost_item
 signal restart
@@ -19,6 +21,7 @@ signal item_dropped
 
 const PREWRITTEN_CONTROLLER : PackedScene = preload("res://game/player/player_controllers/prewritten_controller.tscn")
 const PLAYER : PackedScene = preload("res://game/player/player.tscn")
+const SAVE_GAME_PATH : String = "user://save.tres"
 var time_scale : float = 1.0
 var run_number : int = 1
 var run_limit : int = 3
@@ -89,9 +92,39 @@ func append_frame_data(frame_data : Dictionary) -> void:
 func change_scene(file_name : String):
 	if Ui.get_node("Game/Label") != null:
 		Ui.get_node("Game/Label").start_counting = false
-		print_debug("got UI")
 	Ui.get_node("PauseMenu").pausable = false
 	get_tree().paused = true
 	LoadingScreen.start_load()
 	await LoadingScreen.finished_entering
+	save()
 	get_tree().change_scene_to_file(file_name)
+	load_game()
+
+func save():
+	var save_resource : global_save = global_save.new()
+	print_debug("before", save_resource.current_time)
+	save_resource.current_time = current_time
+	save_resource.first_run = first_run
+	save_resource.second_run = second_run
+	save_resource.quest_status = quest_status
+	save_resource.run_number = run_number
+	saved.emit()
+	ResourceSaver.save(save_resource, SAVE_GAME_PATH)
+	print_debug("after", save_resource.current_time)
+	pass
+
+
+func load_game():
+	if !ResourceLoader.exists(SAVE_GAME_PATH):
+		print_debug("tried to load")
+		return
+	print_debug("actually loaded")
+	var saved_resource : global_save = load(SAVE_GAME_PATH) as global_save
+	current_time = saved_resource.current_time
+	print_debug("loaded time", current_time)
+	first_run = saved_resource.first_run
+	second_run = saved_resource.second_run
+	quest_status = saved_resource.quest_status
+	run_number = saved_resource.run_number
+	loaded.emit()
+	pass
