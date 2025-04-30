@@ -3,18 +3,20 @@ class_name NPC
 
 enum states{IDLE, WALKING, TALKING}
 enum gamestate{NORMAL, SABOTAGED, HELPED}
+const SAVE_GAME_PATH : String = "user://"
 @export_subgroup("Nodes")
 @export var animation_player : AnimationPlayer
 @export var route_manager : AnimationPlayer
 @export var timer : Timer
 @export_subgroup("Dialogue and routes")
+@export var can_interact : bool = true
+@export var variables_for_logic : Dictionary[String, bool]
 ##the keys are when the event happens, and the values are eventRoute resources with
 ##the event's data, i.e. the gamestates {NORMAL, SABOTAGED, HELPED} where the NPC
 ##can move with this route and the route's name
-@export var can_interact : bool = true
 @export var moving_times : Dictionary[float, eventRoute]
-##the keys are the timeline's name and the values are the actual timelines, this is just so it's easier to access them
-#@export var timelines : Dictionary[String, String]
+##a dictionary containing where the item should be at certain timepoints
+@export var places : Dictionary[float, Marker3D]
 @onready var pop_up: Node3D = $PopUp
 
 var moving_towards : Marker3D = null
@@ -24,8 +26,11 @@ var current_event : float = 0.0
 var original_position : Vector3
 var original_rotation : Basis
 var player_control : player_controller
+var random_talks : int = 0
 
 func _ready() -> void:
+	Globals.saved.connect(save)
+	Globals.loaded.connect(load_game)
 	Dialogic.timeline_ended.connect(unpause)
 	Dialogic.signal_event.connect(handle_dialogue_end)
 	original_position = global_position
@@ -82,13 +87,13 @@ func start_walking() -> void:
 func restart() -> void:
 	animation_player.stop()
 	route_manager.stop()
-	route_manager.stop()
 	global_position = original_position
 	global_basis = original_rotation
 	var expected_time : float = 6000
 	for i : float in moving_times.keys():
 		if i < expected_time:
 			current_event = i
+			expected_time = i
 	timer.start(current_event)
 
 
@@ -132,6 +137,45 @@ func unpause() -> void:
 	get_tree().paused = false
 	#handle_dialogue_end()
 	
+func save() -> void:
+	var save_path = str(SAVE_GAME_PATH, name,".tres")
+	var save_resource : NPC_save = NPC_save.new()
+	save_resource.random_talks = random_talks
+	save_resource.current_gamestate = current_gamestate
+	ResourceSaver.save(save_resource, save_path)
+
+
+func load_game() -> void:
+	var save_path = str(SAVE_GAME_PATH, name,".tres")
+	if !ResourceLoader.exists(save_path):
+		print_debug(name, "  tried to load")
+		return
+	
+	var saved_resource : NPC_save = load(save_path) as NPC_save
+	random_talks = saved_resource.random_talks
+	current_gamestate = saved_resource.current_gamestate
+	current_event = 1000.0
+	for i : float in moving_times.keys():
+		if i > Globals.current_time and i < current_event:
+			current_event = i
+	if current_event != 0.0:
+		timer.start(current_event - Globals.current_time)
+
+	var latest_event = 0.0
+	for i : float in moving_times.keys():
+		if i > latest_event and i < Globals.current_time:
+			latest_event = i
+	if latest_event == 0.0:
+		return
+	var route_length : int = route_manager.get_animation(moving_times[latest_event].route).length
+	##if the animation is still ongoing
+	if route_length + latest_event > Globals.current_time:
+		if name == "Mee":
+			print_debug(Globals.current_time - latest_event)
+		route_manager.play_section(moving_times[latest_event].route,Globals.current_time - latest_event,route_length)
+	##if the animation is already finished is places the NPC where it should be
+	else:
+		route_manager.play_section(moving_times[latest_event].route,route_length - .05,route_length)
 
 func handle_dialogue_start(_player_controller : player_controller) -> void:
 	###Implemented by sub-classes###

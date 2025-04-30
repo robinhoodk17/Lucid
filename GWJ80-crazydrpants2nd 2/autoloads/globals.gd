@@ -107,7 +107,6 @@ func change_scene(file_name : String):
 
 func save():
 	var save_resource : global_save = global_save.new()
-	print_debug("before", save_resource.current_time)
 	save_resource.current_time = current_time
 	save_resource.physics_tick = physics_tick
 	save_resource.first_run = first_run
@@ -117,18 +116,16 @@ func save():
 	save_resource.first_time_playing = first_time_playing
 	saved.emit()
 	ResourceSaver.save(save_resource, SAVE_GAME_PATH)
-	print_debug("after", save_resource.current_time)
 
 
 func load_game():
 	if !ResourceLoader.exists(SAVE_GAME_PATH):
 		print_debug("tried to load")
 		return
-	print_debug("actually loaded")
 	var saved_resource : global_save = load(SAVE_GAME_PATH) as global_save
 	current_time = saved_resource.current_time
+	print_debug("actually loaded ", current_time)
 	physics_tick = saved_resource.physics_tick
-	print_debug("loaded time", current_time)
 	first_run = saved_resource.first_run
 	second_run = saved_resource.second_run
 	quest_status = saved_resource.quest_status
