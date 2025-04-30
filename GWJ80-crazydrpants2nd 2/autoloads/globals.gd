@@ -23,6 +23,8 @@ const PREWRITTEN_CONTROLLER : PackedScene = preload("res://game/player/player_co
 const PLAYER : PackedScene = preload("res://game/player/player.tscn")
 const SAVE_GAME_PATH : String = "user://save.tres"
 @export var quest_status : Dictionary[String, int] = {"vinny" : -1, "barry" : -1}
+var first_time_playing : bool = true
+var newload : bool = false
 var time_scale : float = 1.0
 var run_number : int = 1
 var run_limit : int = 3
@@ -36,11 +38,11 @@ var running_karma : int = 0
 var naughty_quests : int = 0
 var nice_quests : int = 0
 #How many physics ticks pass between refreshing the position of items
-var item_refresh_rate : int = 10
+var item_refresh_rate : int = 5
 var sensitivity : float = 1.0
 
 func _restart() -> void:
-	save()
+	physics_tick = 0
 	run_number += 1
 	if run_number > run_limit:
 		get_tree().change_scene_to_file("res://game/scenes/results_page.tscn")
@@ -57,6 +59,7 @@ func _restart() -> void:
 			new_controller.frame_info = second_run
 	new_player.add_child(new_controller)
 	current_time = 0.0
+	save()
 	restart.emit()
 
 
@@ -106,10 +109,12 @@ func save():
 	var save_resource : global_save = global_save.new()
 	print_debug("before", save_resource.current_time)
 	save_resource.current_time = current_time
+	save_resource.physics_tick = physics_tick
 	save_resource.first_run = first_run
 	save_resource.second_run = second_run
 	save_resource.quest_status = quest_status
 	save_resource.run_number = run_number
+	save_resource.first_time_playing = first_time_playing
 	saved.emit()
 	ResourceSaver.save(save_resource, SAVE_GAME_PATH)
 	print_debug("after", save_resource.current_time)
@@ -122,9 +127,11 @@ func load_game():
 	print_debug("actually loaded")
 	var saved_resource : global_save = load(SAVE_GAME_PATH) as global_save
 	current_time = saved_resource.current_time
+	physics_tick = saved_resource.physics_tick
 	print_debug("loaded time", current_time)
 	first_run = saved_resource.first_run
 	second_run = saved_resource.second_run
 	quest_status = saved_resource.quest_status
 	run_number = saved_resource.run_number
-	loaded.emit()
+	first_time_playing = saved_resource.first_time_playing
+	newload = true

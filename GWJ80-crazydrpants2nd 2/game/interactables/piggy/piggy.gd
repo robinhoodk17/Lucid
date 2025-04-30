@@ -25,11 +25,8 @@ func freeze_in_time() -> void:
 		Globals.lost_item.emit()
 		first_encounter = false
 
-		positions_array.clear()
-		rotations_array.clear()
-		for i : int in array_index:
-			positions_array.append(global_position)
-			rotations_array.append(global_basis)
+		positions_dictionary.clear()
+		rotations_dictionary.clear()
 		Dialogic.start("freeze_in_time").process_mode = Node.PROCESS_MODE_ALWAYS
 		Dialogic.process_mode = Node.PROCESS_MODE_ALWAYS
 		@warning_ignore("untyped_declaration")

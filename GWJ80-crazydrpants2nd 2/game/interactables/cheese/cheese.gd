@@ -4,10 +4,19 @@ extends interactable
 @export var experiment_length : float = 120
 
 func _ready() -> void:
+	Globals.saved.connect(save)
+	Globals.loaded.connect(load_game)
+	refresh_turn = randi() % Globals.item_refresh_rate
 	first_encounter = true
 	Globals.restart.connect(on_restart)
-	experiment_timer.start(experiment_length)
-	experiment_timer.timeout.connect(can_interact_again)
+	var starting_location : int = 0
+	positions_dictionary[0] = global_position
+	rotations_dictionary[0] = global_basis
+	for i in places.keys():
+		if i < Globals.current_time and i > starting_location:
+			starting_location = i
+	global_position = positions_dictionary[starting_location]
+	global_basis = rotations_dictionary[starting_location]
 
 
 func can_interact_again() -> void:
@@ -17,11 +26,11 @@ func can_interact_again() -> void:
 
 func on_restart() -> void:
 	drop()
-	array_index = 0
+	drop()
 	current_refresh = 0
 	if frozen_in_time:
 		return
-	global_position = positions_array[array_index]
-	global_basis = rotations_array[array_index]
+	global_position = positions_dictionary[0]
+	global_basis = rotations_dictionary[0]
 	experiment_timer.start(experiment_length)
 	can_interact = false

@@ -14,7 +14,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if physics_tick >= frame_info.size():
-		return
+		physics_tick = frame_info.size()-1
 	player.global_position = frame_info[physics_tick]["position"]
 	playermodel.global_basis = frame_info[physics_tick]["rotation"]
 	var current_talk : Dictionary = frame_info[physics_tick]["talk"]
