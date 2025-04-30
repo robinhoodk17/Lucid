@@ -9,6 +9,25 @@ func _ready() -> void:
 	GUIDE.enable_mapping_context(default_mapping_context)
 	Ui.get_node("PauseMenu").pausable = true
 	Ui.go_to("Game")
+	for i in Globals.run_number + 1:
+		print_debug("data for run number ", i)
+		match i-1:
+			1:
+				var new_player : CharacterBody3D = Globals.PLAYER.instantiate()
+				get_tree().root.add_child(new_player)
+				new_player.global_position = Globals.player_spawn_position
+				new_player.global_basis = Globals.player_spawn_rotation
+				var new_controller : prewritten = Globals.PREWRITTEN_CONTROLLER.instantiate()
+				new_controller.frame_info = Globals.first_run
+				new_player.add_child(new_controller)
+			2:
+				var new_player : CharacterBody3D = Globals.PLAYER.instantiate()
+				get_tree().root.add_child(new_player)
+				new_player.global_position = Globals.player_spawn_position
+				new_player.global_basis = Globals.player_spawn_rotation
+				var new_controller : prewritten = Globals.PREWRITTEN_CONTROLLER.instantiate()
+				new_controller.frame_info = Globals.second_run
+				new_player.add_child(new_controller)
 	LoadingScreen.start_animation()
 	await LoadingScreen.finished_loading
 	get_tree().paused = false
