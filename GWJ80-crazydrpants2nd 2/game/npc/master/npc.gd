@@ -170,8 +170,6 @@ func load_game() -> void:
 	var route_length : int = route_manager.get_animation(moving_times[latest_event].route).length
 	##if the animation is still ongoing
 	if route_length + latest_event > Globals.current_time:
-		if name == "Mee":
-			print_debug(Globals.current_time - latest_event)
 		route_manager.play_section(moving_times[latest_event].route,Globals.current_time - latest_event,route_length)
 	##if the animation is already finished is places the NPC where it should be
 	else:
