@@ -10,12 +10,18 @@ func _ready() -> void:
 
 func _connect_buttons() -> void:
 	if ui:
-		%Play.pressed.connect(_start_game)
+		%Continue.pressed.connect(load_and_start)
+		%NewGame.pressed.connect(_start_game)
 		%HowToPlay.pressed.connect(ui.go_to.bind("HowToPlay"))
 		%Settings.pressed.connect(ui.go_to.bind("Settings"))
 		%Controls.pressed.connect(ui.go_to.bind("Controls"))
 		%Credits.pressed.connect(ui.go_to.bind("Credits"))
 		%Exit.pressed.connect(get_tree().call_deferred.bind("quit"))
+
+
+func load_and_start() -> void:
+	Globals.load_game()
+	_start_game()
 
 
 func _start_game() -> void:

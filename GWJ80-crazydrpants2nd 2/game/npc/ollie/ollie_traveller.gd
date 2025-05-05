@@ -16,7 +16,7 @@ func handle_dialogue_start(_player_controller) -> void:
 	if hiro.current_gamestate == gamestate.SABOTAGED and ! hiro.quest_finished:
 		start_dialogue("ollie_traveller_caught_thief")
 		hiro.quest_finished = true
-		Globals.quest_finished("hiro", gamestate.SABOTAGED, 1)
+		Globals.quest_finished(Globals.npc_names.HIRO, gamestate.SABOTAGED, 1)
 		return
 
 	if Globals.current_time < 240.0:

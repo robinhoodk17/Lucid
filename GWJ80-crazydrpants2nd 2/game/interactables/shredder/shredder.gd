@@ -10,7 +10,7 @@ func handle_dialogue_start(_player_controller) -> void:
 			item.quest_finished = true
 			_player_controller.grabbing = null
 			item.global_position = Vector3(0,1000,0)
-			Globals.quest_finished("dovey", gamestate.SABOTAGED, -1)
+			Globals.quest_finished(Globals.npc_names.DOVEY, gamestate.SABOTAGED, -1)
 			return
 
 		if _player_controller.grabbing.type == interactable.item_type.FILES:
@@ -20,7 +20,7 @@ func handle_dialogue_start(_player_controller) -> void:
 			item.quest_finished = true
 			_player_controller.grabbing = null
 			item.global_position = Vector3(0,1000,0)
-			Globals.quest_finished("dovey", gamestate.SABOTAGED, -1)
+			Globals.quest_finished(Globals.npc_names.DOVEY, gamestate.SABOTAGED, -1)
 			return
 		
 		start_dialogue("you_cant_shred_this")

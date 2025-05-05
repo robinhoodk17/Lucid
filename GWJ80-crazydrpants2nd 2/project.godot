@@ -23,7 +23,7 @@ run/physics_ticks_per_second=30
 [autoload]
 
 Settings="*res://autoloads/settings.gd"
-Globals="*res://autoloads/globals.gd"
+Globals="*res://autoloads/globals.tscn"
 ProjectUISoundController="*res://addons/maaacks_ui_sound_controller/base/scenes/Autoloads/ProjectUISoundController.tscn"
 Utils="*res://autoloads/utils.gd"
 GUIDE="*res://addons/guide/guide.gd"
@@ -331,9 +331,16 @@ hover={
 3d_physics/layer_2="Player"
 3d_physics/layer_3="NPC"
 
+[limbo_ai]
+
+behavior_tree/favorite_tasks=PackedStringArray("BTSelector", "res://addons/limboai/ai/tasks/quest_status.gd", "res://addons/limboai/ai/tasks/time_period.gd", "res://addons/limboai/ai/tasks/start_dialogic.gd", "BTSequence", "res://addons/limboai/ai/tasks/logic_variables.gd")
+behavior_tree/behavior_tree_default_dir="res://addons/limboai/ai/tasks"
+behavior_tree/user_task_dirs=PackedStringArray("res://addons/limboai/ai/tasks")
+
 [physics]
 
 3d/run_on_separate_thread=true
+common/physics_ticks_per_second=50
 3d/physics_engine="Jolt Physics"
 3d/default_gravity=10.0
 

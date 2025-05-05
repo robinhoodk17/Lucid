@@ -3,15 +3,19 @@ extends Label
 var current_run : int = 1
 var start_counting : bool = false
 var last_minute : bool = false
+var counter : int = 0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Globals.restart.connect(on_restart)
 
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if !start_counting:
 		return
 	Globals.current_time += delta
+	counter = (counter + 1) % Globals.item_refresh_rate
+	if counter == 0:
+		Globals.physics_tick += 1 * Globals.time_scale
 	if Globals.current_time >= 540.0 and !last_minute:
 		Globals.last_minute.emit()
 		last_minute = true

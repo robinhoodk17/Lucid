@@ -1,27 +1,38 @@
 extends interactable
 
 @export var experiment_timer : Timer
-@export var experiment_length : float = 120
+@export var second_teleport_timer : Timer
+@export var first_teleport : float = 120
+@export var second_teleport : float = 540
 
-func _ready() -> void:
-	first_encounter = true
-	Globals.restart.connect(on_restart)
-	experiment_timer.start(experiment_length)
-	experiment_timer.timeout.connect(can_interact_again)
+func extendable_restart() -> void:
+	if Globals.current_time < first_teleport:
+		experiment_timer.start(Globals.current_time - first_teleport)
+	elif Globals.current_time < second_teleport:
+		experiment_timer.start(Globals.current_time - second_teleport)
 
+func extendable_ready() -> void:
+	experiment_timer.timeout.connect(teleport)
+	second_teleport_timer.timeout.connect(teleport_2)
+	if Globals.current_time < first_teleport:
+		experiment_timer.start(first_teleport - Globals.current_time)
+	elif Globals.current_time < second_teleport:
+		experiment_timer.start(second_teleport - Globals.current_time)
 
-func can_interact_again() -> void:
-	can_interact = true
-	global_position = Vector3(0, 1000,0)
-
-
-func on_restart() -> void:
-	drop()
-	array_index = 0
-	current_refresh = 0
+func teleport_2() -> void:
 	if frozen_in_time:
 		return
-	global_position = positions_array[array_index]
-	global_basis = rotations_array[array_index]
-	experiment_timer.start(experiment_length)
-	can_interact = false
+	global_position = Vector3(0,-1000, 0)
+
+func teleport() -> void:
+	if frozen_in_time:
+		return
+	global_position = Vector3(0,-1000, 0)
+
+func extendable_interaction(playermodel : Node3D, _player_controller : player_controller) -> void:
+	if !Globals.quest_status.has(Globals.npc_names.ALBERT):
+		Globals.quest_started(Globals.npc_names.ALBERT)
+
+func extendable_freezing(playermodel : Node3D, _player_controller : player_controller) -> void:
+	if !Globals.quest_status.has(Globals.npc_names.ALBERT):
+		Globals.quest_started(Globals.npc_names.ALBERT)

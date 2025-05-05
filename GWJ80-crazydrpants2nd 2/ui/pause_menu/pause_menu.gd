@@ -21,6 +21,7 @@ func _connect_buttons() -> void:
 		%Controls.pressed.connect(ui.go_to.bind("Controls"))
 		%Controls.pressed.connect(%ControlsSFX.play)
 		%MainMenu.pressed.connect(_main_menu)
+		%Save.pressed.connect(save)
 		%Quit.pressed.connect(quit)
 
 
@@ -39,11 +40,13 @@ func _input(event: InputEvent) -> void:
 			#await get_tree().create_timer(.5).timeout
 			pause_music.play()
 
+
 func set_timer_position() -> void:
 	timer_sprite.global_position.y = timer_clock.global_position.y
 	var max_position = timer_clock.size.x
 	var day_percentage = Globals.current_time/600
 	timer_sprite.position.x = day_percentage * max_position
+
 
 func _resume() -> void:
 	pause_music.stop()
@@ -55,11 +58,16 @@ func _resume() -> void:
 
 
 func _restart() -> void:
+	pause_music.stop()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	if ui:
 		ui.go_to("Game")
 	get_tree().paused = false
 	Globals._restart()
+
+
+func save() -> void:
+	Globals.save()
 
 
 func _main_menu() -> void:

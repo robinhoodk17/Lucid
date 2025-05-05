@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="global_save" load_steps=2 format=3 uid="uid://kx5qqimlo3rp"]
+
+[ext_resource type="Script" uid="uid://c0sja3j1m187a" path="res://autoloads/global_save.gd" id="1_qlhdm"]
+
+[resource]
+script = ExtResource("1_qlhdm")
+metadata/_custom_type_script = "uid://c0sja3j1m187a"

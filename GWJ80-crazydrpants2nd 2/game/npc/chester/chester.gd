@@ -16,7 +16,7 @@ func handle_dialogue_start(_player_controller) -> void:
 			start_dialogue("chester_give_rollerblades")
 			route_manager.speed_scale = 10.0
 			current_gamestate = gamestate.HELPED
-			Globals.quest_finished("chester", gamestate.HELPED, 1)
+			Globals.quest_finished(Globals.npc_names.CHESTER, gamestate.HELPED, 1)
 			var item : Node3D = _player_controller.grabbing
 			item.drop()
 			_player_controller.grabbing = null
@@ -47,4 +47,4 @@ func  handle_dialogue_end(signal_argument : String) -> void:
 	if signal_argument == "chester_sabotaged":
 		quest_finished = true
 		current_gamestate = gamestate.SABOTAGED
-		Globals.quest_finished("chester", gamestate.SABOTAGED, -2)
+		Globals.quest_finished(Globals.npc_names.CHESTER, gamestate.SABOTAGED, -2)

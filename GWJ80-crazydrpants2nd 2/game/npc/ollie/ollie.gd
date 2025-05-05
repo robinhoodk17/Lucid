@@ -15,7 +15,7 @@ func handle_dialogue_start(_player_controller) -> void:
 
 	if Globals.current_time < 360.0:
 		start_dialogue("ollie_snoring")
-		Globals.quest_started("ollie", gamestate.HELPED)
+		Globals.quest_started(Globals.npc_names.OLLIE)
 		return
 	
 	if Globals.current_time > 360.0 and first_run and !convinced_first_time:
@@ -62,7 +62,7 @@ func restart() -> void:
 
 func  handle_dialogue_end(signal_argument : String) -> void:
 	if signal_argument == "ollie_convince_travel":
-		Globals.quest_finished("ollie", gamestate.HELPED, 2)
+		Globals.quest_finished(Globals.npc_names.OLLIE, gamestate.HELPED, 2)
 		current_gamestate = gamestate.HELPED
 		quest_finished = true
 	if signal_argument == "ollie_convinced_signal":

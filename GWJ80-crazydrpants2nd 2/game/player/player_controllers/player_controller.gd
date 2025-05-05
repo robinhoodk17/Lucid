@@ -198,6 +198,7 @@ func turn_off_trail() -> void:
 func restarted() -> void:
 	player.global_position = original_position
 	player.global_basis = original_rotation
+	reenable()
 
 
 func handle_time_freeze() -> void:
@@ -205,9 +206,8 @@ func handle_time_freeze() -> void:
 		return
 	if interaction_detection.showing_which != null:
 		if interaction_detection.showing_which.is_in_group("item"):
-			if interaction_detection.showing_which.freezable:
-				interaction_detection.showing_which.freeze_in_time()
-				return
+			interaction_detection.showing_which.freeze_in_time(playermodel, self)
+			return
 	if dash_timer.is_stopped():
 		dash_trail.show()
 		trail_timer.start(dash_duration)

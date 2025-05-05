@@ -104,9 +104,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 focus_neighbor_left = NodePath("../Resume")
 focus_neighbor_top = NodePath("../Resume")
-focus_neighbor_right = NodePath("../Settings")
+focus_neighbor_right = NodePath("../Save")
 focus_neighbor_bottom = NodePath("../../ScrollContainer/MarginContainer/VBoxContainer/QueenBee/HBoxContainer/Portrait")
-focus_next = NodePath("../Settings")
+focus_next = NodePath("../Save")
 focus_previous = NodePath("../Resume")
 text = "Time travel"
 
@@ -122,16 +122,35 @@ unique_name_in_owner = true
 stream = ExtResource("4_f2x4c")
 bus = &"SFX"
 
-[node name="Settings" type="Button" parent="Panel/MarginContainer/VBoxContainer/Buttons"]
+[node name="Save" type="Button" parent="Panel/MarginContainer/VBoxContainer/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 focus_neighbor_left = NodePath("../Restart")
 focus_neighbor_top = NodePath("../Restart")
+focus_neighbor_right = NodePath("../Settings")
+focus_neighbor_bottom = NodePath("../../ScrollContainer/MarginContainer/VBoxContainer/QueenBee/HBoxContainer/Portrait")
+focus_next = NodePath("../Settings")
+focus_previous = NodePath("../Restart")
+text = "Save"
+
+[node name="Node" parent="Panel/MarginContainer/VBoxContainer/Buttons/Save" node_paths=PackedStringArray("wait_for") instance=ExtResource("2_le02u")]
+connect_as_button = true
+entrance_animation = true
+wait_for = NodePath("../../../../../../Node")
+hover_rotation = 0.4
+random_entrance = true
+
+[node name="Settings" type="Button" parent="Panel/MarginContainer/VBoxContainer/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_neighbor_left = NodePath("../Save")
+focus_neighbor_top = NodePath("../Save")
 focus_neighbor_right = NodePath("../Controls")
 focus_neighbor_bottom = NodePath("../../ScrollContainer/MarginContainer/VBoxContainer/QueenBee/HBoxContainer/Portrait")
 focus_next = NodePath("../Controls")
-focus_previous = NodePath("../Restart")
+focus_previous = NodePath("../Save")
 text = "Settings"
 
 [node name="Node" parent="Panel/MarginContainer/VBoxContainer/Buttons/Settings" node_paths=PackedStringArray("wait_for") instance=ExtResource("2_le02u")]

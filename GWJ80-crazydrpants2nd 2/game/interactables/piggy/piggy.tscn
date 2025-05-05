@@ -76,6 +76,9 @@ shadow_mesh = SubResource("ArrayMesh_jydx0")
 
 [node name="Piggy" instance=ExtResource("1_nss8e")]
 script = ExtResource("2_3b4tk")
+freezable = 300.0
+can_interact = 300.0
+type = 2
 
 [node name="PopUp" parent="." index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.640737, 0)

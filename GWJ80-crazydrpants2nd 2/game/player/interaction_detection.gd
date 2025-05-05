@@ -10,7 +10,7 @@ func _process(delta : float) -> void:
 	var current_distance : float = 10000
 	for i : Node3D in overlapping_bodies:
 		if i.is_in_group("interactable"):
-			if i.can_interact:
+			if Globals.current_time > i.can_interact:
 				var candidate_distance : float = i.global_position.distance_squared_to(global_position)
 				if candidate_distance < current_distance:
 					current_distance = candidate_distance
