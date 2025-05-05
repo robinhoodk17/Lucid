@@ -32,7 +32,7 @@ func crack_safe() -> void:
 		make_jail_appear()
 		if !quest_finished:
 			quest_finished = true
-			Globals.quest_finished("hiro", gamestate.SABOTAGED, -1)
+			Globals.quest_finished(Globals.npc_names.HIRO, gamestate.SABOTAGED, -1)
 
 func make_jail_appear() -> void:
 	pass
@@ -74,4 +74,4 @@ func restart() -> void:
 func handle_dialogue_end(signal_argument : String) -> void:
 	if signal_argument == "hiro_sabotaged":
 		current_gamestate = gamestate.SABOTAGED
-		Globals.quest_progress("hiro")
+		Globals.quest_progress(Globals.npc_names.HIRO)

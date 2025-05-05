@@ -9,8 +9,7 @@ const SAVE_GAME_PATH : String = "user://"
 @export var route_manager : AnimationPlayer
 @export var timer : Timer
 @export_subgroup("Dialogue and routes")
-@export var can_interact : bool = true
-@export var variables_for_logic : Dictionary[String, bool]
+@export var can_interact : float = 0.0
 ##the keys are when the event happens, and the values are eventRoute resources with
 ##the event's data, i.e. the gamestates {NORMAL, SABOTAGED, HELPED} where the NPC
 ##can move with this route and the route's name
@@ -26,7 +25,9 @@ var current_event : float = 0.0
 var original_position : Vector3
 var original_rotation : Basis
 var player_control : player_controller
+var logic_variables : Dictionary
 var random_talks : int = 0
+var quest_completed : bool = false
 
 func _ready() -> void:
 	Globals.saved.connect(save)
@@ -48,6 +49,8 @@ func _ready() -> void:
 			#print_debug(current_event, name)
 	timer.start(current_event)
 	Globals.restart.connect(restart)
+	extendable_ready()
+	Globals.on_quest_end.connect(finish_quest)
 
 
 func back_to_idle() -> void:
@@ -85,7 +88,7 @@ func start_walking() -> void:
 
 
 func restart() -> void:
-	animation_player.stop()
+	back_to_idle()
 	route_manager.stop()
 	global_position = original_position
 	global_basis = original_rotation
@@ -95,6 +98,7 @@ func restart() -> void:
 			current_event = i
 			expected_time = i
 	timer.start(current_event)
+	extendable_restart()
 
 
 func display_prompt() -> void:
@@ -140,8 +144,11 @@ func unpause() -> void:
 func save() -> void:
 	var save_path = str(SAVE_GAME_PATH, name,".tres")
 	var save_resource : NPC_save = NPC_save.new()
+	save_resource.can_interact = can_interact
 	save_resource.random_talks = random_talks
 	save_resource.current_gamestate = current_gamestate
+	save_resource.logic_variables = logic_variables
+	save_resource.quest_completed = quest_completed
 	ResourceSaver.save(save_resource, save_path)
 
 
@@ -154,6 +161,9 @@ func load_game() -> void:
 	var saved_resource : NPC_save = load(save_path) as NPC_save
 	random_talks = saved_resource.random_talks
 	current_gamestate = saved_resource.current_gamestate
+	logic_variables = saved_resource.logic_variables
+	quest_completed = saved_resource.quest_completed
+	can_interact = saved_resource.can_interact
 	current_event = 1000.0
 	for i : float in moving_times.keys():
 		if i > Globals.current_time and i < current_event:
@@ -174,6 +184,12 @@ func load_game() -> void:
 	##if the animation is already finished is places the NPC where it should be
 	else:
 		route_manager.play_section(moving_times[latest_event].route,route_length - .05,route_length)
+	extendable_load()
+
+
+func extendable_load():
+	###Implemented by sub-classes###
+	pass
 
 func handle_dialogue_start(_player_controller : player_controller) -> void:
 	###Implemented by sub-classes###
@@ -181,5 +197,17 @@ func handle_dialogue_start(_player_controller : player_controller) -> void:
 
 
 func handle_dialogue_end(signal_argument : String) -> void:
+	###Implemented by sub-classes###
+	pass
+
+func extendable_ready() -> void:
+	###Implemented by sub-classes###
+	pass
+
+func extendable_restart() -> void:
+	###Implemented by sub-classes###
+	pass
+
+func finish_quest(quest_name : Globals.npc_names, help_or_sabotage : NPC.gamestate) -> void:
 	###Implemented by sub-classes###
 	pass

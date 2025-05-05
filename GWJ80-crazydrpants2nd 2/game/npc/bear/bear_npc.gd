@@ -1,13 +1,11 @@
 extends NPC
 
-var quest_finished : bool = false
-var quest_started : bool = false
-var convinced_barry_quest : bool = false
-@export var barry : NPC
-
 ###Override this function to handle dialogue logic###
 func handle_dialogue_start(_player_controller) -> void:
-	if barry.quest_started and !convinced_barry_quest:
+	if !Globals.quest_status.has(Globals.npc_names.MAMA_BEAR):
+		Globals.quest_started(Globals.npc_names.MAMA_BEAR)
+
+	if Globals.quest_status[Globals.npc_names.BARRY] and !logic_variables["convinced_barry_quest"]:
 		start_dialogue("mama_bear_barry_idea")
 		return
 
@@ -15,7 +13,7 @@ func handle_dialogue_start(_player_controller) -> void:
 		if _player_controller.grabbing.type == interactable.item_type.BADGE:
 			if Globals.current_time > 360.0 and Globals.current_time < 480.0:
 				start_dialogue("mama_bear_mee_badge")
-				Globals.quest_finished("mee", gamestate.SABOTAGED, -1)
+				Globals.quest_finished(Globals.npc_names.MEE, gamestate.SABOTAGED, -1)
 				var item : Node3D = _player_controller.grabbing
 				item.drop()
 				item.quest_finished = true
@@ -31,14 +29,10 @@ func handle_dialogue_start(_player_controller) -> void:
 				start_dialogue("mama_bear_no_overtime")
 				return
 
-	if !quest_finished:
-		if !quest_started:
-			Globals.quest_started("mama_bear", gamestate.HELPED)
-			quest_started = true
+	if Globals.quest_status[Globals.npc_names.MAMA_BEAR] <100:
 		start_dialogue("mama_bear_decision_tree")
 		return
-
-	if quest_finished:
+	else:
 		start_dialogue("mama_bear_correct_choices")
 		return
 
@@ -46,10 +40,8 @@ func handle_dialogue_start(_player_controller) -> void:
 
 func handle_dialogue_end(signal_argument : String) -> void:
 	if signal_argument == "mama_bear_barry_quest":
-		convinced_barry_quest = true
-		barry.quest_progressed()
-		
-	
+		logic_variables["convinced_barry_quest"] = 100
+		Globals.quest_progress(Globals.npc_names.BARRY)		
+
 	if signal_argument == "mama_bear_quest_finished":
-		Globals.quest_finished("mama_bear", gamestate.HELPED, 1)
-		quest_finished = true
+		Globals.quest_finished(Globals.npc_names.MAMA_BEAR, gamestate.HELPED, 1)

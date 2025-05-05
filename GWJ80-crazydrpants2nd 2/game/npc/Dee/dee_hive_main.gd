@@ -1,37 +1,29 @@
 extends NPC
 
-@export var barry : NPC
 @export var timer_for_present : Timer
 @export var time_of_present : float = 430.0
-var convinced_barry_quest : bool = false
-var quest_finished : bool = false
-var gave_present = false
 
-func _ready() -> void:
-	Dialogic.timeline_ended.connect(unpause)
-	Dialogic.signal_event.connect(handle_dialogue_end)
+func extendable_ready() -> void:
+	logic_variables["gave_present"] = 0
 	timer_for_present.timeout.connect(fix_decision)
-	original_position = global_position
-	original_rotation = global_basis
-	timer.timeout.connect(start_walking)
-	var expected_time : float = 6000
-	if animation_player.has_animation("idle"):
-		animation_player.play("idle")
-	if animation_player.has_animation("Idle"):
-		animation_player.play("Idle")
-	for i : float in moving_times.keys():
-		if i < expected_time:
-			current_event = i
-	timer.start(current_event)
-	Globals.restart.connect(restart)
+	timer_for_present.start(time_of_present)
+	
+func extendable_load():
+	if Globals.current_time < time_of_present:
+		timer_for_present.start(time_of_present - Globals.current_time)
+
 
 func handle_dialogue_start(_player_controller) -> void:
-	if barry.quest_started and !convinced_barry_quest:
-		start_dialogue("dee_barry_quest")
-		return
+	if !Globals.quest_status.has(Globals.npc_names.DEE):
+		Globals.quest_started(Globals.npc_names.DEE)
+		
+	if Globals.quest_status[Globals.npc_names.BARRY] and logic_variables.has("convinced_barry_quest"):
+		if logic_variables["convinced_barry_quest"] < 100:
+			start_dialogue("dee_barry_quest")
+			return
 
 	if Globals.current_time < 300.0:
-		if quest_finished:
+		if Globals.quest_status[Globals.npc_names.DEE] >= 100:
 			start_dialogue("butterfly_council")
 			return
 		match current_gamestate:
@@ -63,8 +55,8 @@ func handle_dialogue_start(_player_controller) -> void:
 
 func handle_dialogue_end(signal_argument : String) -> void:
 	if signal_argument == "dee_union":
-		convinced_barry_quest = true
-		barry.quest_progressed()
+		logic_variables["convinced_barry_quest"] = 100
+		Globals.quest_progress(Globals.npc_names.BARRY)
 	
 	if signal_argument == "dee_briefcase":
 		current_gamestate = gamestate.SABOTAGED
@@ -73,24 +65,13 @@ func handle_dialogue_end(signal_argument : String) -> void:
 		current_gamestate = gamestate.HELPED
 
 func fix_decision() -> void:
-	if !quest_finished and current_gamestate != gamestate.NORMAL:
-		quest_finished = true
+	if !Globals.quest_status[Globals.npc_names.DEE] and current_gamestate != gamestate.NORMAL:
 		if current_gamestate == gamestate.HELPED:
-			Globals.quest_finished("dee", current_gamestate, 1)
+			Globals.quest_finished(Globals.npc_names.DEE, current_gamestate, 1)
 		if current_gamestate == gamestate.SABOTAGED:
-			Globals.quest_finished("dee", current_gamestate, -1)
+			Globals.quest_finished(Globals.npc_names.DEE, current_gamestate, -1)
 
-func restart() -> void:
-	gave_present = false
-	animation_player.stop()
-	route_manager.stop()
-	route_manager.stop()
+func extendable_restart() -> void:
+	logic_variables["gave_present"] = 0
 	timer_for_present.stop()
 	timer_for_present.start(time_of_present)
-	global_position = original_position
-	global_basis = original_rotation
-	var expected_time : float = 6000
-	for i : float in moving_times.keys():
-		if i < expected_time:
-			current_event = i
-	timer.start(current_event)

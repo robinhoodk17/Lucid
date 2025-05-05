@@ -7,6 +7,9 @@
 
 [node name="JawsFiles" instance=ExtResource("1_u2fj5")]
 script = ExtResource("2_ax5f7")
+freezable = 300.0
+can_interact = 300.0
+type = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." index="1"]
 mesh = SubResource("BoxMesh_u2fj5")

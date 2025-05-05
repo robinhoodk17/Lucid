@@ -15,7 +15,7 @@ func _physics_process(delta: float) -> void:
 	Globals.current_time += delta
 	counter = (counter + 1) % Globals.item_refresh_rate
 	if counter == 0:
-		Globals.physics_tick += 1
+		Globals.physics_tick += 1 * Globals.time_scale
 	if Globals.current_time >= 540.0 and !last_minute:
 		Globals.last_minute.emit()
 		last_minute = true

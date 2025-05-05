@@ -4,9 +4,11 @@ enum item_type{CHEESE, LETTER, PIGGY, FILES, BADGE, ROLLERBLADES, MAIL}
 ##a dictionary containing where the item should be at certain timepoints
 @export var places : Dictionary[float, Marker3D]
 @export var already_interacted : bool = false
-@export var freezable : bool = false
+##at what time the player can start freezing this object
+@export var freezable : float = 0.0
 @export var affected_by_time : bool = true
-@export var can_interact : bool = true
+##at what time the player can start interacting this object
+@export var can_interact : float = 0.0
 @export var type : item_type = item_type.CHEESE
 @onready var pop_up: Node3D = $PopUp
 @onready var quest_finished : bool = false
@@ -37,6 +39,7 @@ func _ready() -> void:
 			starting_location = i
 	global_position = positions_dictionary[starting_location]
 	global_basis = rotations_dictionary[starting_location]
+	extendable_ready()
 		
 
 func _physics_process(delta: float) -> void:
@@ -65,7 +68,11 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector3.ZERO
 
 
-func freeze_in_time() -> void:
+func freeze_in_time(playermodel : Node3D, _player_controller : player_controller) -> void:
+	extendable_freezing(playermodel, _player_controller)
+	
+	if Globals.current_time < freezable:
+		return
 	frozen_in_time = true
 
 	Globals.lost_item.emit()
@@ -73,6 +80,8 @@ func freeze_in_time() -> void:
 
 	positions_dictionary.clear()
 	rotations_dictionary.clear()
+	can_interact = 0.0
+	freezable = 0.0
 	Dialogic.start("freeze_in_time").process_mode = Node.PROCESS_MODE_ALWAYS
 	Dialogic.process_mode = Node.PROCESS_MODE_ALWAYS
 	@warning_ignore("untyped_declaration")
@@ -82,6 +91,9 @@ func freeze_in_time() -> void:
 
 
 func interact(playermodel : Node3D, _player_controller : player_controller) -> void:
+	extendable_interaction(playermodel, _player_controller)
+	if Globals.current_time < can_interact:
+		return
 	grab(playermodel, _player_controller)
 	
 func grab(_player_model : Node3D, _player_controller : player_controller) -> void:
@@ -119,7 +131,7 @@ func drop() -> void:
 
 
 func display_prompt() -> void:
-	if first_encounter and freezable:
+	if first_encounter and Globals.current_time > freezable:
 		Globals.found_item.emit()
 	if pop_up:
 		if pop_up.visible:
@@ -136,10 +148,15 @@ func turn_off_prompt() -> void:
 
 
 func on_restart() -> void:
-	drop()
+	if grabbed:
+		drop()
+		positions_dictionary[highest_index] = global_position + Vector3.UP
+		rotations_dictionary[highest_index] = global_basis
 	current_refresh = 0
+	extendable_restart()
 	if frozen_in_time:
 		return
+	#first_encounter = true
 	global_position = positions_dictionary[0]
 	global_basis = rotations_dictionary[0]
 
@@ -157,6 +174,7 @@ func save() -> void:
 	save_resource.affected_by_time = affected_by_time
 	save_resource.can_interact = can_interact
 	save_resource.frozen_in_time = frozen_in_time
+	save_resource.quest_finished = quest_finished
 	ResourceSaver.save(save_resource, save_path)
 	pass
 
@@ -179,3 +197,21 @@ func load_game() -> void:
 	affected_by_time = saved_resource.affected_by_time
 	can_interact = saved_resource.can_interact
 	frozen_in_time = saved_resource.frozen_in_time
+	quest_finished = saved_resource.quest_finished
+
+
+func extendable_interaction(playermodel : Node3D, _player_controller : player_controller) -> void:
+	###Implemented by sub-classes###
+	pass
+
+func extendable_freezing(playermodel : Node3D, _player_controller : player_controller) -> void:
+	###Implemented by sub-classes###
+	pass
+
+func extendable_ready() -> void:
+	###Implemented by sub-classes###
+	pass
+
+func extendable_restart() -> void:
+	###Implemented by sub-classes###
+	pass

@@ -1,28 +1,30 @@
 extends NPC
 
-var quest_started : bool = false
-var room_meeting_occurred : bool = false
-var ollie : NPC
-var	quest_completed : bool = true
+
+func finish_quest(quest_name : Globals.npc_names, help_or_sabotage : NPC.gamestate) -> void:
+	if quest_name == Globals.npc_names.ALBERT:
+		logic_variables["quest_finished"] = 100
+		current_gamestate = help_or_sabotage
 
 func handle_dialogue_start(_player_controller : player_controller) -> void:
-	if Globals.current_time > 590 and ollie.quest_finished:
-		start_dialogue("albert_helped_ollie")
-		return
+	if !Globals.quest_status.has(Globals.npc_names.ALBERT):
+		Globals.quest_started(Globals.npc_names.ALBERT)
+
+	if Globals.current_time > 590 and Globals.quest_status.has(Globals.npc_names.OLLIE):
+		if Globals.quest_status[Globals.npc_names.OLLIE] >= 100:
+			start_dialogue("albert_helped_ollie")
+			return
 	
 	if Globals.current_time < 120:
 		start_dialogue("albert_waiting_experiment")
 		return
 
 	if Globals.current_time > 120 and Globals.current_time < 240:
-		if quest_started:
-			start_dialogue("albert_delivered_cheese")
-			return
 		if _player_controller.grabbing:
 			if _player_controller.grabbing.type == interactable.item_type.CHEESE:
 				start_dialogue("albert_delivered_cheese")
-				quest_started = true
-				Globals.quest_started("albert", gamestate.HELPED)
+				Globals.quest_progress(Globals.npc_names.ALBERT)
+				logic_variables["cheese_delivered"] = 100
 				var item : Node3D = _player_controller.grabbing
 				item.drop()
 				_player_controller.grabbing = null
@@ -37,19 +39,20 @@ func handle_dialogue_start(_player_controller : player_controller) -> void:
 			if _player_controller.grabbing.type == interactable.item_type.CHEESE:
 				start_dialogue("albert_delivered_cheese_late")
 				return
-		if !quest_started:
+		if !logic_variables["cheese_delivered"]:
 			start_dialogue("albert_failed_experiment")
 			return
 
 	if Globals.current_time > 300.0 and Globals.current_time < 420.0:
-		if quest_started:
+		if logic_variables["cheese_delivered"]:
 			start_dialogue("albert_room_meeting")
-			Globals.quest_progress("albert")
-			room_meeting_occurred = true
+			Globals.quest_progress(Globals.npc_names.ALBERT)
+			logic_variables["room_meeting_occurred"] = 100
+			Globals.quest_progress(Globals.npc_names.ALBERT)
 			return
 	
 	if Globals.current_time > 420.0:
-		if room_meeting_occurred:
+		if logic_variables["room_meeting_occurred"]:
 			start_dialogue("albert_waiting_for_quest")
 			return
 		else:

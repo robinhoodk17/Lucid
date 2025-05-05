@@ -7,7 +7,8 @@ class_name interactable_save
 @export var position : Vector3
 @export var rotation : Basis
 @export var already_interacted : bool
-@export var freezable : bool
+@export var freezable : float
 @export var affected_by_time : bool
-@export var can_interact : bool
+@export var can_interact : float
 @export var frozen_in_time : bool
+@export var quest_finished : bool

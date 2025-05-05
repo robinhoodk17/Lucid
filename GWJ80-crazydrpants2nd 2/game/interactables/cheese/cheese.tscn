@@ -1,12 +1,10 @@
-[gd_scene load_steps=11 format=4 uid="uid://jowdm0hucqo8"]
+[gd_scene load_steps=10 format=4 uid="uid://jowdm0hucqo8"]
 
 [ext_resource type="PackedScene" uid="uid://dvcvga3y78p25" path="res://game/interactables/master.tscn" id="1_fnti4"]
 [ext_resource type="Script" uid="uid://ce5eibq0kywxl" path="res://game/interactables/cheese/cheese.gd" id="2_a88il"]
 [ext_resource type="Material" uid="uid://dnvlpeg4no6w3" path="res://materials/outline.tres" id="3_ohhxc"]
 [ext_resource type="Texture2D" uid="uid://lk088fraslcl" path="res://Textures/quest items_cheese.png" id="4_cnuh2"]
 [ext_resource type="Texture2D" uid="uid://5lvak8mfsur7" path="res://Textures/quest items_cheese2.png" id="5_20bj3"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_fnti4"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_45d75"]
 resource_name = "cheese"
@@ -79,21 +77,21 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_8fc8t")
 
-[node name="cheese" node_paths=PackedStringArray("experiment_timer") instance=ExtResource("1_fnti4")]
+[node name="cheese" node_paths=PackedStringArray("experiment_timer", "second_teleport_timer") instance=ExtResource("1_fnti4")]
 script = ExtResource("2_a88il")
-experiment_timer = NodePath("Timer")
-experiment_length = 120.0
-freezable = true
-can_interact = false
+experiment_timer = NodePath("FirstTeleport")
+second_teleport_timer = NodePath("FirstTeleport2")
+first_teleport = 120.0
+second_teleport = 540.0
+freezable = 120.0
+can_interact = 120.0
 
 [node name="PopUp" parent="." index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.275301, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="1"]
-visible = false
-mesh = SubResource("BoxMesh_fnti4")
+[node name="FirstTeleport" type="Timer" parent="." index="1"]
 
-[node name="Timer" type="Timer" parent="." index="2"]
+[node name="FirstTeleport2" type="Timer" parent="." index="2"]
 
 [node name="cheese" type="MeshInstance3D" parent="." index="4"]
 transform = Transform3D(0.504, 0, 0, 0, 0.504, 0, 0, 0, 0.504, 0, 0, 0)

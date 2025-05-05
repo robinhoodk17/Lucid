@@ -19,12 +19,12 @@ func handle_dialogue_start(_player_controller) -> void:
 
 	if Globals.current_time < 60 and !unlocked_technique:
 		start_dialogue("cee_looks_at_stain")
-		Globals.quest_started("cee", gamestate.HELPED)
+		Globals.quest_started(Globals.npc_names.CEE)
 		return
 	
 	if Globals.current_time < 60 and unlocked_technique:
 		start_dialogue("cee_looks_at_stain_variant")
-		Globals.quest_finished("cee", gamestate.HELPED, 1)
+		Globals.quest_finished(Globals.npc_names.CEE, gamestate.HELPED, 1)
 		return
 
 	if current_gamestate == gamestate.HELPED:

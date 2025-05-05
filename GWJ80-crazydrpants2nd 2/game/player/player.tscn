@@ -9,7 +9,7 @@ margin = 0.01
 radius = 0.2
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6sduc"]
-size = Vector3(2.5, 2, 3.5)
+size = Vector3(5, 2, 7)
 
 [sub_resource type="BoxMesh" id="BoxMesh_8soms"]
 size = Vector3(0.01, 0.01, 0.5)

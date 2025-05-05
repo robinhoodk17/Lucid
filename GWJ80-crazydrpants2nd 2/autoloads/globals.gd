@@ -13,16 +13,17 @@ signal found_item
 signal lost_item
 signal restart
 signal last_minute
-signal on_quest_start(quest_name : String, help_or_sabotage : NPC.gamestate)
-signal on_quest_end(quest_name : String, help_or_sabotage : NPC.gamestate)
-signal on_quest_progress(quest_name : String)
+signal on_quest_start(quest_name : npc_names, help_or_sabotage : NPC.gamestate)
+signal on_quest_end(quest_name : npc_names, help_or_sabotage : NPC.gamestate)
+signal on_quest_progress(quest_name : npc_names)
 signal item_grabbed
 signal item_dropped
 
+enum npc_names{CEE, DEE, MEE, ROMULUS, JAWS, DOVEY, VINNY, QUEEN_BEE, HIRO, CHESTER, ALBERT, MAMA_BEAR, OLLIE, BARRY}
 const PREWRITTEN_CONTROLLER : PackedScene = preload("res://game/player/player_controllers/prewritten_controller.tscn")
 const PLAYER : PackedScene = preload("res://game/player/player.tscn")
 const SAVE_GAME_PATH : String = "user://save.tres"
-@export var quest_status : Dictionary[String, int] = {"vinny" : -1, "barry" : -1}
+@export var quest_status : Dictionary
 var first_time_playing : bool = true
 var newload : bool = false
 var time_scale : float = 1.0
@@ -63,12 +64,12 @@ func _restart() -> void:
 	restart.emit()
 
 
-func quest_started(quest_name : String, help_or_sabotage : NPC.gamestate = NPC.gamestate.NORMAL) -> void:
+func quest_started(quest_name : npc_names) -> void:
 	quest_status[quest_name] = 0
-	on_quest_start.emit(quest_name, help_or_sabotage)
+	on_quest_start.emit(quest_name)
 
 
-func quest_finished(quest_name : String, help_or_sabotage : NPC.gamestate, karma : int = 0) -> void:
+func quest_finished(quest_name : npc_names, help_or_sabotage : NPC.gamestate, karma : int = 0) -> void:
 	quest_status[quest_name] = 100
 	on_quest_end.emit(quest_name)
 	running_karma += karma
@@ -79,7 +80,7 @@ func quest_finished(quest_name : String, help_or_sabotage : NPC.gamestate, karma
 	print_debug(running_karma)
 
 
-func quest_progress(quest_name : String) -> void:
+func quest_progress(quest_name : npc_names) -> void:
 	quest_status[quest_name] += 1
 	on_quest_progress.emit(quest_name)
 

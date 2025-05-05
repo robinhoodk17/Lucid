@@ -2,8 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://dvcvga3y78p25" path="res://game/interactables/master.tscn" id="1_djbnb"]
 [ext_resource type="Material" uid="uid://dnvlpeg4no6w3" path="res://materials/outline.tres" id="2_p745u"]
-[ext_resource type="Texture2D" uid="uid://b4fdm11p4w54q" path="res://Textures/quest items_paper-envelope-icon-in-monochrome-silhouette-vector-19334754.jpg" id="3_v551s"]
-[ext_resource type="Texture2D" uid="uid://bgm8yqlo12tut" path="res://Textures/quest items_red-shape-love-heart-icon-isolated-on-white-background-vector.png" id="4_nhqf5"]
+[ext_resource type="Texture2D" uid="uid://4crqjfia36qq" path="res://Textures/quest items_paper-envelope-icon-in-monochrome-silhouette-vector-19334754.jpg" id="3_v551s"]
+[ext_resource type="Texture2D" uid="uid://c8rig3gskrwuo" path="res://Textures/quest items_red-shape-love-heart-icon-isolated-on-white-background-vector.png" id="4_nhqf5"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_dkh1v"]
 size = Vector3(1, 0.4, 0.05)
@@ -118,7 +118,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_6ovnl")
 
 [node name="Letter" instance=ExtResource("1_djbnb")]
-freezable = true
+type = 1
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." index="1"]
 visible = false

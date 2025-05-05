@@ -1,36 +1,38 @@
 extends interactable
 
 @export var experiment_timer : Timer
-@export var experiment_length : float = 120
+@export var second_teleport_timer : Timer
+@export var first_teleport : float = 120
+@export var second_teleport : float = 540
 
-func _ready() -> void:
-	Globals.saved.connect(save)
-	Globals.loaded.connect(load_game)
-	refresh_turn = randi() % Globals.item_refresh_rate
-	first_encounter = true
-	Globals.restart.connect(on_restart)
-	var starting_location : int = 0
-	positions_dictionary[0] = global_position
-	rotations_dictionary[0] = global_basis
-	for i in places.keys():
-		if i < Globals.current_time and i > starting_location:
-			starting_location = i
-	global_position = positions_dictionary[starting_location]
-	global_basis = rotations_dictionary[starting_location]
+func extendable_restart() -> void:
+	if Globals.current_time < first_teleport:
+		experiment_timer.start(Globals.current_time - first_teleport)
+	elif Globals.current_time < second_teleport:
+		experiment_timer.start(Globals.current_time - second_teleport)
 
+func extendable_ready() -> void:
+	experiment_timer.timeout.connect(teleport)
+	second_teleport_timer.timeout.connect(teleport_2)
+	if Globals.current_time < first_teleport:
+		experiment_timer.start(first_teleport - Globals.current_time)
+	elif Globals.current_time < second_teleport:
+		experiment_timer.start(second_teleport - Globals.current_time)
 
-func can_interact_again() -> void:
-	can_interact = true
-	global_position = Vector3(0, 1000,0)
-
-
-func on_restart() -> void:
-	drop()
-	drop()
-	current_refresh = 0
+func teleport_2() -> void:
 	if frozen_in_time:
 		return
-	global_position = positions_dictionary[0]
-	global_basis = rotations_dictionary[0]
-	experiment_timer.start(experiment_length)
-	can_interact = false
+	global_position = Vector3(0,-1000, 0)
+
+func teleport() -> void:
+	if frozen_in_time:
+		return
+	global_position = Vector3(0,-1000, 0)
+
+func extendable_interaction(playermodel : Node3D, _player_controller : player_controller) -> void:
+	if !Globals.quest_status.has(Globals.npc_names.ALBERT):
+		Globals.quest_started(Globals.npc_names.ALBERT)
+
+func extendable_freezing(playermodel : Node3D, _player_controller : player_controller) -> void:
+	if !Globals.quest_status.has(Globals.npc_names.ALBERT):
+		Globals.quest_started(Globals.npc_names.ALBERT)

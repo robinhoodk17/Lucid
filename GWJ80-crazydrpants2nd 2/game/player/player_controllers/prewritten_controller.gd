@@ -21,7 +21,7 @@ func _physics_process(delta: float) -> void:
 	#print_debug(frame_info[physics_tick])
 	if current_talk["talk_started"]:
 		current_talk["npc"].current_gamestate = current_talk["talk_result"]
-	physics_tick += 1
+	physics_tick += 1 * Globals.time_scale
 
 
 func restarted() -> void:
