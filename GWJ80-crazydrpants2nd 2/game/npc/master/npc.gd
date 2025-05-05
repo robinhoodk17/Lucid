@@ -8,6 +8,8 @@ const SAVE_GAME_PATH : String = "user://"
 @export var animation_player : AnimationPlayer
 @export var route_manager : AnimationPlayer
 @export var timer : Timer
+@export var dialogic : BTPlayer
+@export var madtalk : BTPlayer
 @export_subgroup("Dialogue and routes")
 @export var can_interact : float = 0.0
 ##the keys are when the event happens, and the values are eventRoute resources with
@@ -114,6 +116,7 @@ func turn_off_prompt() -> void:
 
 
 func interact(_playermodel : Node3D, _player_controller : player_controller) -> void:
+	dialogic.update(.01)
 	handle_dialogue_start(_player_controller)
 	player_control = _player_controller
 	player_control.disable()

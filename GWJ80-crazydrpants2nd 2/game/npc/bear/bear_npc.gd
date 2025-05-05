@@ -2,6 +2,9 @@ extends NPC
 
 ###Override this function to handle dialogue logic###
 func handle_dialogue_start(_player_controller) -> void:
+	if !logic_variables.has("convinced_barry_quest"):
+		logic_variables["convinced_barry_quest"] = 0
+
 	if !Globals.quest_status.has(Globals.npc_names.MAMA_BEAR):
 		Globals.quest_started(Globals.npc_names.MAMA_BEAR)
 

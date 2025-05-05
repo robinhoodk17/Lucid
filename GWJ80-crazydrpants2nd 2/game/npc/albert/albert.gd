@@ -16,7 +16,6 @@ func handle_dialogue_start(_player_controller : player_controller) -> void:
 			return
 	
 	if Globals.current_time < 120:
-		start_dialogue("albert_waiting_experiment")
 		return
 
 	if Globals.current_time > 120 and Globals.current_time < 240:

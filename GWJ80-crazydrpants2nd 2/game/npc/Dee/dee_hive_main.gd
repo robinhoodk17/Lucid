@@ -5,6 +5,7 @@ extends NPC
 
 func extendable_ready() -> void:
 	logic_variables["gave_present"] = 0
+	logic_variables["convinced_barry_quest"] = 0
 	timer_for_present.timeout.connect(fix_decision)
 	timer_for_present.start(time_of_present)
 	
@@ -17,10 +18,9 @@ func handle_dialogue_start(_player_controller) -> void:
 	if !Globals.quest_status.has(Globals.npc_names.DEE):
 		Globals.quest_started(Globals.npc_names.DEE)
 		
-	if Globals.quest_status[Globals.npc_names.BARRY] and logic_variables.has("convinced_barry_quest"):
-		if logic_variables["convinced_barry_quest"] < 100:
-			start_dialogue("dee_barry_quest")
-			return
+	if Globals.quest_status[Globals.npc_names.BARRY] and logic_variables["convinced_barry_quest"] < 100:
+		start_dialogue("dee_barry_quest")
+		return
 
 	if Globals.current_time < 300.0:
 		if Globals.quest_status[Globals.npc_names.DEE] >= 100:
