@@ -1,3 +1,4 @@
+@tool
 extends Node
 
 # What goes into globals.gd?
@@ -20,6 +21,7 @@ signal item_grabbed
 signal item_dropped
 
 enum npc_names{CEE, DEE, MEE, ROMULUS, JAWS, DOVEY, VINNY, QUEEN_BEE, HIRO, CHESTER, ALBERT, MAMA_BEAR, OLLIE, BARRY}
+var npc_names_strings : Array[String] = ["CEE", "DEE", "MEE", "ROMULUS", "JAWS", "DOVEY", "VINNY", "QUEEN_BEE", "HIRO", "CHESTER", "ALBERT", "MAMA_BEAR", "OLLIE", "BARRY"]
 const PREWRITTEN_CONTROLLER : PackedScene = preload("res://game/player/player_controllers/prewritten_controller.tscn")
 const PLAYER : PackedScene = preload("res://game/player/player.tscn")
 const SAVE_GAME_PATH : String = "user://save.tres"

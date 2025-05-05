@@ -116,10 +116,10 @@ func turn_off_prompt() -> void:
 
 
 func interact(_playermodel : Node3D, _player_controller : player_controller) -> void:
-	dialogic.update(.01)
-	handle_dialogue_start(_player_controller)
 	player_control = _player_controller
 	player_control.disable()
+	dialogic.update(.01)
+	handle_dialogue_start(_player_controller)
 
 
 func start_dialogue(timeline : String) -> void:

@@ -333,7 +333,7 @@ hover={
 
 [limbo_ai]
 
-behavior_tree/favorite_tasks=PackedStringArray("BTSelector", "res://addons/limboai/ai/tasks/quest_status.gd", "res://addons/limboai/ai/tasks/time_period.gd", "BTCheckVar", "res://addons/limboai/ai/tasks/start_dialogic.gd")
+behavior_tree/favorite_tasks=PackedStringArray("BTSelector", "res://addons/limboai/ai/tasks/quest_status.gd", "res://addons/limboai/ai/tasks/time_period.gd", "res://addons/limboai/ai/tasks/start_dialogic.gd", "BTSequence", "res://addons/limboai/ai/tasks/logic_variables.gd")
 behavior_tree/behavior_tree_default_dir="res://addons/limboai/ai/tasks"
 behavior_tree/user_task_dirs=PackedStringArray("res://addons/limboai/ai/tasks")
 

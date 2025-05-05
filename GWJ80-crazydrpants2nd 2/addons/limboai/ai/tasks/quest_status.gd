@@ -10,8 +10,7 @@ extends BTCondition
 
 # Called to generate a display name for the task (requires @tool).
 func _generate_name() -> String:
-	return "QuestProgression"
-
+	return str("quest ", quest_name)
 # Called each time this task is ticked (aka executed).
 func _tick(delta: float) -> Status:
 	if Globals.quest_status.has(quest_name):

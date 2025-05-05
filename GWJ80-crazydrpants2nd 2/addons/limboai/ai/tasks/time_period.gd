@@ -11,7 +11,7 @@ extends BTCondition
 
 # Called to generate a display name for the task (requires @tool).
 func _generate_name() -> String:
-	return "TimePeriod"
+	return str("time ", int(early), " - ", int(late))
 
 # Called each time this task is ticked (aka executed).
 func _tick(delta: float) -> Status:
