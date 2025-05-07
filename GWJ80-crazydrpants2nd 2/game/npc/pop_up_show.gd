@@ -1,6 +1,8 @@
 extends Node3D
 
 @export var interact_action : GUIDEAction
+@export var message : String = "Grab"
+@onready var message_label: Label = $SubViewport/Label2
 @onready var label: RichTextLabel = $SubViewport/Label
 @onready var sub_viewport: SubViewport = $SubViewport
 @onready var sprite_3d: Sprite3D = $Sprite3D
@@ -15,6 +17,7 @@ func turn_off_prompt() -> void:
 
 func pop_up_show() -> void:
 	show()
+	message_label.text = message
 	var formatter : GUIDEInputFormatter = GUIDEInputFormatter.for_active_contexts(100)
 	@warning_ignore("untyped_declaration")
 	var input_label  = await formatter.action_as_richtext_async(interact_action)

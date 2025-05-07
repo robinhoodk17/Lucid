@@ -7,6 +7,11 @@
 radius = 1.0
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_j63dq"]
+var/convinced_barry_quest/name = &"convinced_barry_quest"
+var/convinced_barry_quest/type = 1
+var/convinced_barry_quest/value = false
+var/convinced_barry_quest/hint = 0
+var/convinced_barry_quest/hint_string = "0-100"
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_6bren"]
 
@@ -32,6 +37,7 @@ one_shot = true
 
 [node name="PopUp" parent="." instance=ExtResource("2_j63dq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.703859, 0)
+message = "Talk"
 
 [node name="RouteManager" type="AnimationPlayer" parent="."]
 

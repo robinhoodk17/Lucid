@@ -1,26 +1,21 @@
 extends NPC
 
 @export var dee : NPC
-@export var barry : NPC
 @export var ice_skates : Node3D
 @export var ice_skate_timer : Timer
 @export var ice_skates_appear_time : float
-var convinced_barry_quest : bool = false
 var unlocked_technique : bool = false
 
 func handle_dialogue_start(_player_controller) -> void:
-	if barry.quest_started and !convinced_barry_quest:
-		start_dialogue("cee_barry_quest")
+	if !Globals.quest_status.has(Globals.npc_names.CEE):
+		Globals.quest_started(Globals.npc_names.CEE)
 		return
-		
+
 	if Globals.current_time > 180 and Globals.current_time < 300.0:
 		start_dialogue("cee_talks_to_dee")
 		return
 
-	if Globals.current_time < 60 and !unlocked_technique:
-		start_dialogue("cee_looks_at_stain")
-		Globals.quest_started(Globals.npc_names.CEE)
-		return
+
 	
 	if Globals.current_time < 60 and unlocked_technique:
 		start_dialogue("cee_looks_at_stain_variant")
@@ -68,5 +63,5 @@ func restart() -> void:
 
 func handle_dialogue_end(signal_argument : String) -> void:
 	if signal_argument == "cee_union":
-		convinced_barry_quest = true
-		barry.quest_progressed()
+		logic_variables["convinced_barry_quest"] = 100
+		Globals.quest_progress(Globals.npc_names.BARRY)

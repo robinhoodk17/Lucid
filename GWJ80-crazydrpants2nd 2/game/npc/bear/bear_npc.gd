@@ -8,7 +8,7 @@ func handle_dialogue_start(_player_controller) -> void:
 	if !Globals.quest_status.has(Globals.npc_names.MAMA_BEAR):
 		Globals.quest_started(Globals.npc_names.MAMA_BEAR)
 
-	if Globals.quest_status[Globals.npc_names.BARRY] and !logic_variables["convinced_barry_quest"]:
+	if Globals.quest_status.has(Globals.npc_names.BARRY) and !logic_variables["convinced_barry_quest"]:
 		start_dialogue("mama_bear_barry_idea")
 		return
 

@@ -2244,7 +2244,7 @@ script = ExtResource("2_1f2qb")
 animation_player = NodePath("cosmic owl/AnimationPlayer")
 
 [node name="PopUp" parent="." index="4"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.70871, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4988, 0)
 
 [node name="cosmic owl" type="Node3D" parent="." index="6"]
 
@@ -4419,7 +4419,7 @@ bones/295/rotation = Quaternion(-0.0930475, -0.0187883, -0.284112, 0.95408)
 bones/295/scale = Vector3(1, 1, 1)
 
 [node name="Cube_001" type="BoneAttachment3D" parent="cosmic owl/char_grp/rig/Skeleton3D" index="0"]
-transform = Transform3D(-0.999234, 0.0385572, 0.00667392, 0.0365578, 0.980682, -0.192164, -0.0139543, -0.191773, -0.98134, -0.622265, 1.81779, 0.082803)
+transform = Transform3D(-0.999234, 0.0385572, 0.00667393, 0.0365578, 0.980682, -0.192164, -0.0139543, -0.191773, -0.98134, -0.622265, 1.81779, 0.0828031)
 bone_name = "Cube.001"
 bone_idx = 124
 
@@ -4428,7 +4428,7 @@ mesh = SubResource("ArrayMesh_efe5m")
 skeleton = NodePath("")
 
 [node name="Cube_002" type="BoneAttachment3D" parent="cosmic owl/char_grp/rig/Skeleton3D" index="1"]
-transform = Transform3D(0.999234, 0.0365017, 0.0141004, -0.0365578, 0.999325, 0.00374249, 0.0139543, 0.004255, -0.999894, 0.0238228, 0.966212, -0.0444311)
+transform = Transform3D(0.999234, 0.0365017, 0.0141004, -0.0365578, 0.999325, 0.00374273, 0.0139543, 0.004255, -0.999894, 0.0238228, 0.966212, -0.044431)
 bone_name = "Cube.002"
 bone_idx = 125
 
@@ -4437,7 +4437,7 @@ mesh = SubResource("ArrayMesh_3vtqw")
 skeleton = NodePath("")
 
 [node name="Cube_003" type="BoneAttachment3D" parent="cosmic owl/char_grp/rig/Skeleton3D" index="2"]
-transform = Transform3D(0.188949, -0.212681, 0.0118455, 0.21269, 0.188978, 0.00314395, 0.0034606, -0.00229192, -0.839991, 0.0186512, 1.23941, 0.562312)
+transform = Transform3D(0.18895, -0.212681, 0.0118455, 0.21269, 0.188978, 0.00314415, 0.0034606, -0.00229192, -0.839991, 0.0186512, 1.23941, 0.562312)
 bone_name = "Cube.003"
 bone_idx = 126
 

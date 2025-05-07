@@ -1,15 +1,23 @@
-[gd_resource type="BehaviorTree" load_steps=49 format=3 uid="uid://cbs7oy6st6o55"]
+[gd_resource type="BehaviorTree" load_steps=58 format=3 uid="uid://cbs7oy6st6o55"]
 
 [ext_resource type="Script" uid="uid://ds4vtyfbfg7qt" path="res://addons/limboai/ai/tasks/time_period.gd" id="1_5y16m"]
 [ext_resource type="Script" uid="uid://swj2dso4mk8x" path="res://addons/limboai/ai/tasks/start_dialogic.gd" id="2_m1vva"]
 [ext_resource type="Script" uid="uid://o6bta4ja72tm" path="res://addons/limboai/ai/tasks/quest_status.gd" id="3_m1vva"]
 [ext_resource type="Script" uid="uid://chnf1tyvw766b" path="res://addons/limboai/ai/tasks/check_item.gd" id="4_8aeia"]
-[ext_resource type="Script" uid="uid://b27vmerawq7rs" path="res://addons/limboai/ai/tasks/logic_variables.gd" id="4_74xyu"]
-[ext_resource type="Script" uid="uid://x53xip4jei1i" path="res://addons/limboai/ai/tasks/set_variable.gd" id="5_e0pdn"]
 [ext_resource type="Script" uid="uid://calxog1pcip5p" path="res://addons/limboai/ai/tasks/quest_progress.gd" id="6_e0pdn"]
 [ext_resource type="Script" uid="uid://c0ewkskhr0sqk" path="res://addons/limboai/ai/tasks/drop_item.gd" id="7_bc5o5"]
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_iu5ib"]
+var/cheese_delivered/name = &"cheese_delivered"
+var/cheese_delivered/type = 2
+var/cheese_delivered/value = 0
+var/cheese_delivered/hint = 1
+var/cheese_delivered/hint_string = "0-100"
+var/meeting_occurred/name = &"meeting_occurred"
+var/meeting_occurred/type = 2
+var/meeting_occurred/value = 0
+var/meeting_occurred/hint = 1
+var/meeting_occurred/hint_string = "0-100"
 
 [sub_resource type="BTCondition" id="BTCondition_74xyu"]
 script = ExtResource("1_5y16m")
@@ -31,7 +39,7 @@ late = 1800.0
 
 [sub_resource type="BTCondition" id="BTCondition_e0pdn"]
 script = ExtResource("3_m1vva")
-quest_name = 12
+quest_name = 0
 quest_progress = 1
 
 [sub_resource type="BTAction" id="BTAction_bc5o5"]
@@ -56,19 +64,23 @@ timeline_name = "albert_delivered_cheese"
 script = ExtResource("7_bc5o5")
 interactable_type = 0
 
-[sub_resource type="BTAction" id="BTAction_rosqt"]
-script = ExtResource("5_e0pdn")
-variable_name = "cheese_delivered"
-new_value = 100
-
 [sub_resource type="BTAction" id="BTAction_awb14"]
 custom_name = "quest progress albert"
 script = ExtResource("6_e0pdn")
 quest_name = 10
 
+[sub_resource type="BBVariant" id="BBVariant_e0pdn"]
+type = 2
+saved_value = 100
+resource_name = "100"
+
+[sub_resource type="BTSetVar" id="BTSetVar_bc5o5"]
+variable = &"cheese_delivered"
+value = SubResource("BBVariant_e0pdn")
+
 [sub_resource type="BTSequence" id="BTSequence_4e2gi"]
 custom_name = "albert_delivered_cheese"
-children = [SubResource("BTCondition_bc5o5"), SubResource("BTCondition_awb14"), SubResource("BTAction_wc5ox"), SubResource("BTAction_rosqt"), SubResource("BTAction_awb14")]
+children = [SubResource("BTCondition_bc5o5"), SubResource("BTCondition_awb14"), SubResource("BTAction_wc5ox"), SubResource("BTAction_awb14"), SubResource("BTSetVar_bc5o5")]
 
 [sub_resource type="BTCondition" id="BTCondition_rosqt"]
 script = ExtResource("1_5y16m")
@@ -88,11 +100,15 @@ script = ExtResource("1_5y16m")
 early = 240.0
 late = 1800.0
 
-[sub_resource type="BTCondition" id="BTCondition_4e2gi"]
-script = ExtResource("4_74xyu")
-variable_name = "cheese_delivered"
-threshold = 100
-set_to_0 = true
+[sub_resource type="BBVariant" id="BBVariant_awb14"]
+type = 2
+saved_value = 100
+resource_name = "100"
+
+[sub_resource type="BTCheckVar" id="BTCheckVar_rosqt"]
+variable = &"cheese_delivered"
+check_type = 4
+value = SubResource("BBVariant_awb14")
 
 [sub_resource type="BTCondition" id="BTCondition_xtl7p"]
 script = ExtResource("4_8aeia")
@@ -101,18 +117,22 @@ timeline_name = "albert_delivered_cheese_late"
 
 [sub_resource type="BTSequence" id="BTSequence_tn8kt"]
 custom_name = "albert_delivered_cheese_late"
-children = [SubResource("BTCondition_a3upo"), SubResource("BTCondition_4e2gi"), SubResource("BTCondition_xtl7p")]
+children = [SubResource("BTCondition_a3upo"), SubResource("BTCheckVar_rosqt"), SubResource("BTCondition_xtl7p")]
 
 [sub_resource type="BTCondition" id="BTCondition_wc5ox"]
 script = ExtResource("1_5y16m")
 early = 240.0
 late = 1800.0
 
-[sub_resource type="BTCondition" id="BTCondition_tn8kt"]
-script = ExtResource("4_74xyu")
-variable_name = "cheese_delivered"
-threshold = 100
-set_to_0 = true
+[sub_resource type="BBVariant" id="BBVariant_4e2gi"]
+type = 2
+saved_value = 100
+resource_name = "100"
+
+[sub_resource type="BTCheckVar" id="BTCheckVar_wc5ox"]
+variable = &"cheese_delivered"
+check_type = 4
+value = SubResource("BBVariant_4e2gi")
 
 [sub_resource type="BTAction" id="BTAction_et5of"]
 script = ExtResource("2_m1vva")
@@ -120,46 +140,58 @@ timeline = "albert_failed_experiment"
 
 [sub_resource type="BTSequence" id="BTSequence_5uo7q"]
 custom_name = "albert_failed_experiment"
-children = [SubResource("BTCondition_wc5ox"), SubResource("BTCondition_tn8kt"), SubResource("BTAction_et5of")]
+children = [SubResource("BTCondition_wc5ox"), SubResource("BTCheckVar_wc5ox"), SubResource("BTAction_et5of")]
 
 [sub_resource type="BTCondition" id="BTCondition_k0hhw"]
 script = ExtResource("1_5y16m")
 early = 300.0
 late = 420.0
 
-[sub_resource type="BTCondition" id="BTCondition_et5of"]
-script = ExtResource("4_74xyu")
-variable_name = "cheese_delivered"
-threshold = 100
-set_to_0 = true
+[sub_resource type="BBVariant" id="BBVariant_a3upo"]
+type = 2
+saved_value = 100
+resource_name = "100"
+
+[sub_resource type="BTCheckVar" id="BTCheckVar_xtl7p"]
+variable = &"cheese_delivered"
+check_type = 4
+value = SubResource("BBVariant_a3upo")
 
 [sub_resource type="BTAction" id="BTAction_5uo7q"]
 script = ExtResource("2_m1vva")
 timeline = "albert_room_meeting"
 
-[sub_resource type="BTAction" id="BTAction_k0hhw"]
-script = ExtResource("5_e0pdn")
-variable_name = "room_meeting"
-new_value = 100
-
 [sub_resource type="BTAction" id="BTAction_xt01n"]
 script = ExtResource("6_e0pdn")
 quest_name = 10
 
+[sub_resource type="BBVariant" id="BBVariant_tn8kt"]
+type = 2
+saved_value = 100
+resource_name = "100"
+
+[sub_resource type="BTSetVar" id="BTSetVar_et5of"]
+variable = &"meeting_occurred"
+value = SubResource("BBVariant_tn8kt")
+
 [sub_resource type="BTSequence" id="BTSequence_xt01n"]
 custom_name = "albert_room_meeting"
-children = [SubResource("BTCondition_k0hhw"), SubResource("BTCondition_et5of"), SubResource("BTAction_5uo7q"), SubResource("BTAction_k0hhw"), SubResource("BTAction_xt01n")]
+children = [SubResource("BTCondition_k0hhw"), SubResource("BTCheckVar_xtl7p"), SubResource("BTAction_5uo7q"), SubResource("BTAction_xt01n"), SubResource("BTSetVar_et5of")]
 
 [sub_resource type="BTCondition" id="BTCondition_dwlrt"]
 script = ExtResource("1_5y16m")
 early = 420.0
 late = 1800.0
 
-[sub_resource type="BTCondition" id="BTCondition_8mknx"]
-script = ExtResource("4_74xyu")
-variable_name = "room_meeting"
-threshold = 1
-set_to_0 = true
+[sub_resource type="BBVariant" id="BBVariant_5uo7q"]
+type = 2
+saved_value = 100
+resource_name = "100"
+
+[sub_resource type="BTCheckVar" id="BTCheckVar_k0hhw"]
+variable = &"meeting_occurred"
+check_type = 4
+value = SubResource("BBVariant_5uo7q")
 
 [sub_resource type="BTAction" id="BTAction_ofwh4"]
 script = ExtResource("2_m1vva")
@@ -167,18 +199,22 @@ timeline = "albert_waiting_for_quest"
 
 [sub_resource type="BTSequence" id="BTSequence_dwlrt"]
 custom_name = "albert_waiting_for_quest"
-children = [SubResource("BTCondition_dwlrt"), SubResource("BTCondition_8mknx"), SubResource("BTAction_ofwh4")]
+children = [SubResource("BTCondition_dwlrt"), SubResource("BTCheckVar_k0hhw"), SubResource("BTAction_ofwh4")]
 
 [sub_resource type="BTCondition" id="BTCondition_c61pq"]
 script = ExtResource("1_5y16m")
 early = 420.0
 late = 1800.0
 
-[sub_resource type="BTCondition" id="BTCondition_3vma1"]
-script = ExtResource("4_74xyu")
-variable_name = "cheese_delivered"
-threshold = 100
-set_to_0 = true
+[sub_resource type="BBVariant" id="BBVariant_xt01n"]
+type = 2
+saved_value = 100
+resource_name = "100"
+
+[sub_resource type="BTCheckVar" id="BTCheckVar_dwlrt"]
+variable = &"cheese_delivered"
+check_type = 4
+value = SubResource("BBVariant_xt01n")
 
 [sub_resource type="BTAction" id="BTAction_fdpj6"]
 script = ExtResource("2_m1vva")
@@ -186,10 +222,26 @@ timeline = "albert_was_late_to_meeting"
 
 [sub_resource type="BTSequence" id="BTSequence_pjlkx"]
 custom_name = "albert_was_late_to_meeting"
-children = [SubResource("BTCondition_c61pq"), SubResource("BTCondition_3vma1"), SubResource("BTAction_fdpj6")]
+children = [SubResource("BTCondition_c61pq"), SubResource("BTCheckVar_dwlrt"), SubResource("BTAction_fdpj6")]
+
+[sub_resource type="BTAction" id="BTAction_e0pdn"]
+script = ExtResource("2_m1vva")
+timeline = "whoops"
+
+[sub_resource type="BBNode" id="BBNode_e0pdn"]
+saved_value = NodePath(".")
+resource_name = "."
+
+[sub_resource type="BTCallMethod" id="BTCallMethod_bc5o5"]
+node = SubResource("BBNode_e0pdn")
+method = &"report_errors"
+
+[sub_resource type="BTSequence" id="BTSequence_bc5o5"]
+custom_name = "Whoops"
+children = [SubResource("BTAction_e0pdn"), SubResource("BTCallMethod_bc5o5")]
 
 [sub_resource type="BTSelector" id="BTSelector_e0pdn"]
-children = [SubResource("BTSequence_5y16m"), SubResource("BTSequence_awb14"), SubResource("BTSequence_4e2gi"), SubResource("BTSequence_wc5ox"), SubResource("BTSequence_tn8kt"), SubResource("BTSequence_5uo7q"), SubResource("BTSequence_xt01n"), SubResource("BTSequence_dwlrt"), SubResource("BTSequence_pjlkx")]
+children = [SubResource("BTSequence_5y16m"), SubResource("BTSequence_awb14"), SubResource("BTSequence_4e2gi"), SubResource("BTSequence_wc5ox"), SubResource("BTSequence_tn8kt"), SubResource("BTSequence_5uo7q"), SubResource("BTSequence_xt01n"), SubResource("BTSequence_dwlrt"), SubResource("BTSequence_pjlkx"), SubResource("BTSequence_bc5o5")]
 
 [resource]
 blackboard_plan = SubResource("BlackboardPlan_iu5ib")

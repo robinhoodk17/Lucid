@@ -1,0 +1,41 @@
+[gd_resource type="BehaviorTree" load_steps=10 format=3 uid="uid://c7khrpt8mkqb"]
+
+[ext_resource type="Script" uid="uid://o6bta4ja72tm" path="res://addons/limboai/ai/tasks/quest_status.gd" id="1_4cxc5"]
+[ext_resource type="Script" uid="uid://swj2dso4mk8x" path="res://addons/limboai/ai/tasks/start_dialogic.gd" id="2_3ph03"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_x2mnl"]
+var/convinced_barry_quest/name = &"convinced_barry_quest"
+var/convinced_barry_quest/type = 2
+var/convinced_barry_quest/value = 0
+var/convinced_barry_quest/hint = 0
+var/convinced_barry_quest/hint_string = ""
+
+[sub_resource type="BTCondition" id="BTCondition_3ph03"]
+script = ExtResource("1_4cxc5")
+quest_name = 13
+quest_progress = 0
+
+[sub_resource type="BBVariant" id="BBVariant_evn3c"]
+type = 2
+saved_value = 100
+resource_name = "100"
+
+[sub_resource type="BTCheckVar" id="BTCheckVar_ah1se"]
+variable = &"convinced_barry_quest"
+check_type = 1
+value = SubResource("BBVariant_evn3c")
+
+[sub_resource type="BTAction" id="BTAction_kqpyn"]
+script = ExtResource("2_3ph03")
+timeline = "dee_barry_quest"
+
+[sub_resource type="BTSequence" id="BTSequence_evn3c"]
+custom_name = "dee_barry_quest"
+children = [SubResource("BTCondition_3ph03"), SubResource("BTCheckVar_ah1se"), SubResource("BTAction_kqpyn")]
+
+[sub_resource type="BTSelector" id="BTSelector_ah1se"]
+children = [SubResource("BTSequence_evn3c")]
+
+[resource]
+blackboard_plan = SubResource("BlackboardPlan_x2mnl")
+root_task = SubResource("BTSelector_ah1se")

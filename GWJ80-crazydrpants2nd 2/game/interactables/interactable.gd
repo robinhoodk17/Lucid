@@ -132,6 +132,7 @@ func drop() -> void:
 
 func display_prompt() -> void:
 	if first_encounter and Globals.current_time > freezable:
+		first_encounter = false
 		Globals.found_item.emit()
 	if pop_up:
 		if pop_up.visible:
@@ -175,6 +176,7 @@ func save() -> void:
 	save_resource.can_interact = can_interact
 	save_resource.frozen_in_time = frozen_in_time
 	save_resource.quest_finished = quest_finished
+	save_resource.first_encounter = first_encounter
 	ResourceSaver.save(save_resource, save_path)
 	pass
 
@@ -197,6 +199,7 @@ func load_game() -> void:
 	affected_by_time = saved_resource.affected_by_time
 	can_interact = saved_resource.can_interact
 	frozen_in_time = saved_resource.frozen_in_time
+	first_encounter = saved_resource.first_encounter
 	quest_finished = saved_resource.quest_finished
 
 

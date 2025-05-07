@@ -1,0 +1,40 @@
+[gd_resource type="BehaviorTree" load_steps=11 format=3 uid="uid://b5d265yooyxkn"]
+
+[ext_resource type="Script" uid="uid://o6bta4ja72tm" path="res://addons/limboai/ai/tasks/quest_status.gd" id="1_qfin2"]
+[ext_resource type="Script" uid="uid://swj2dso4mk8x" path="res://addons/limboai/ai/tasks/start_dialogic.gd" id="2_j8cxl"]
+[ext_resource type="Script" uid="uid://bmho5emqakfqt" path="res://addons/limboai/ai/tasks/check_var.gd" id="2_jxy8j"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_cto3g"]
+var/convinced_barry_quest/name = &"convinced_barry_quest"
+var/convinced_barry_quest/type = 1
+var/convinced_barry_quest/value = false
+var/convinced_barry_quest/hint = 0
+var/convinced_barry_quest/hint_string = "0-100"
+
+[sub_resource type="BTCondition" id="BTCondition_jxy8j"]
+script = ExtResource("1_qfin2")
+quest_name = 13
+quest_progress = 0
+
+[sub_resource type="BTCondition" id="BTCondition_rllkl"]
+script = ExtResource("2_jxy8j")
+variable_name = "convinced_barry"
+threshold = 100
+
+[sub_resource type="BTInvert" id="BTInvert_j8cxl"]
+children = [SubResource("BTCondition_rllkl")]
+
+[sub_resource type="BTAction" id="BTAction_rtqhx"]
+script = ExtResource("2_j8cxl")
+timeline = "mee_barry_quest"
+
+[sub_resource type="BTSequence" id="BTSequence_dm6b7"]
+custom_name = "mee_barry_quest"
+children = [SubResource("BTCondition_jxy8j"), SubResource("BTInvert_j8cxl"), SubResource("BTAction_rtqhx")]
+
+[sub_resource type="BTSelector" id="BTSelector_vkinb"]
+children = [SubResource("BTSequence_dm6b7")]
+
+[resource]
+blackboard_plan = SubResource("BlackboardPlan_cto3g")
+root_task = SubResource("BTSelector_vkinb")

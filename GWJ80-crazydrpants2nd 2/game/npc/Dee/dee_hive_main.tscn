@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://wu80y2tmaeqw"]
+[gd_scene load_steps=5 format=3 uid="uid://wu80y2tmaeqw"]
 
 [ext_resource type="PackedScene" uid="uid://88f70ly0w5b4" path="res://game/npc/master/npc.tscn" id="1_ovur6"]
 [ext_resource type="Script" uid="uid://bb8xs12cb7owb" path="res://game/npc/Dee/dee_hive_main.gd" id="2_lgtcm"]
 [ext_resource type="PackedScene" uid="uid://bx12xp05cowpt" path="res://game/npc/Dee/Dee Hive.tscn" id="2_or8pd"]
+[ext_resource type="BehaviorTree" uid="uid://c7khrpt8mkqb" path="res://game/npc/Dee/logic_trees/dee_dialogic.tres" id="4_lgtcm"]
 
 [node name="DeeHive" node_paths=PackedStringArray("timer_for_present") instance=ExtResource("1_ovur6")]
 script = ExtResource("2_lgtcm")
@@ -15,5 +16,8 @@ time_of_present = 430.0
 autoplay = "idle"
 
 [node name="TimerForPresent" type="Timer" parent="." index="7"]
+
+[node name="Dialogic" parent="." index="8"]
+behavior_tree = ExtResource("4_lgtcm")
 
 [editable path="dee hive"]

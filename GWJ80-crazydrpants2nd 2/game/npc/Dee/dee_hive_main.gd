@@ -17,10 +17,6 @@ func extendable_load():
 func handle_dialogue_start(_player_controller) -> void:
 	if !Globals.quest_status.has(Globals.npc_names.DEE):
 		Globals.quest_started(Globals.npc_names.DEE)
-		
-	if Globals.quest_status[Globals.npc_names.BARRY] and logic_variables["convinced_barry_quest"] < 100:
-		start_dialogue("dee_barry_quest")
-		return
 
 	if Globals.current_time < 300.0:
 		if Globals.quest_status[Globals.npc_names.DEE] >= 100:
@@ -55,7 +51,7 @@ func handle_dialogue_start(_player_controller) -> void:
 
 func handle_dialogue_end(signal_argument : String) -> void:
 	if signal_argument == "dee_union":
-		logic_variables["convinced_barry_quest"] = 100
+		dialogic.blackboard["convinced_barry_quest"] = 100
 		Globals.quest_progress(Globals.npc_names.BARRY)
 	
 	if signal_argument == "dee_briefcase":
@@ -65,11 +61,14 @@ func handle_dialogue_end(signal_argument : String) -> void:
 		current_gamestate = gamestate.HELPED
 
 func fix_decision() -> void:
-	if !Globals.quest_status[Globals.npc_names.DEE] and current_gamestate != gamestate.NORMAL:
-		if current_gamestate == gamestate.HELPED:
-			Globals.quest_finished(Globals.npc_names.DEE, current_gamestate, 1)
-		if current_gamestate == gamestate.SABOTAGED:
-			Globals.quest_finished(Globals.npc_names.DEE, current_gamestate, -1)
+	if Globals.quest_status.has(Globals.npc_names.DEE):
+		if Globals.quest_status[Globals.npc_names.DEE] >= 100:
+			return
+
+	if current_gamestate == gamestate.HELPED:
+		Globals.quest_finished(Globals.npc_names.DEE, current_gamestate, 1)
+	if current_gamestate == gamestate.SABOTAGED:
+		Globals.quest_finished(Globals.npc_names.DEE, current_gamestate, -1)
 
 func extendable_restart() -> void:
 	logic_variables["gave_present"] = 0
