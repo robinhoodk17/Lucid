@@ -1,6 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://cp8nvomyrn6r4"]
+[gd_scene load_steps=6 format=3 uid="uid://cp8nvomyrn6r4"]
 
 [ext_resource type="Script" uid="uid://7eck4kxvewks" path="res://autoloads/globals.gd" id="1_26amj"]
+[ext_resource type="Script" uid="uid://bxl2p20uj1xj7" path="res://addons/guide/guide_mapping_context.gd" id="2_1o40i"]
+[ext_resource type="Resource" uid="uid://cni2x6rc1miyd" path="res://input/keyboard_mapping.tres" id="3_omgew"]
+[ext_resource type="Resource" uid="uid://u46rl8f2ja66" path="res://input/controller_mapping.tres" id="4_wert5"]
+[ext_resource type="Resource" uid="uid://ntn0iujtfrd" path="res://input/change_mapping.tres" id="5_420kd"]
 
 [node name="Globals" type="Node"]
 script = ExtResource("1_26amj")
+context_mappings = Array[ExtResource("2_1o40i")]([ExtResource("3_omgew"), ExtResource("4_wert5")])
+change_mapping = ExtResource("5_420kd")

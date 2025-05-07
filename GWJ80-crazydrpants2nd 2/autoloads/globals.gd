@@ -8,6 +8,7 @@ extends Node
 signal post_ui_message(text: String)
 ## Emitted by UI/Controls when a action is remapped
 signal controls_changed(config: GUIDERemappingConfig)
+signal context_changed()
 signal saved
 signal loaded
 signal found_item
@@ -25,8 +26,12 @@ var npc_names_strings : Array[String] = ["CEE", "DEE", "MEE", "ROMULUS", "JAWS",
 const PREWRITTEN_CONTROLLER : PackedScene = preload("res://game/player/player_controllers/prewritten_controller.tscn")
 const PLAYER : PackedScene = preload("res://game/player/player.tscn")
 const SAVE_GAME_PATH : String = "user://save.tres"
-@export var quest_status : Dictionary
+@export var context_mappings : Array[GUIDEMappingContext]
+@export var change_mapping : GUIDEAction
+var current_mapping : int = 0
+var quest_status : Dictionary
 var area_player_spawn : int = 1
+var scene_name : int = 0
 var travelling : bool = false
 var first_time_playing : bool = true
 var newload : bool = false
@@ -45,6 +50,21 @@ var nice_quests : int = 0
 #How many physics ticks pass between refreshing the position of items
 var item_refresh_rate : int = 5
 var sensitivity : float = 1.0
+
+func _ready() -> void:
+	call_deferred("late_ready")
+func late_ready() -> void:
+	GUIDE.enable_mapping_context(context_mappings[current_mapping])
+	change_mapping.triggered.connect(change_mapping_context)
+
+
+func change_mapping_context() -> void:
+	GUIDE.disable_mapping_context(context_mappings[current_mapping])
+	current_mapping = (current_mapping + 1) % context_mappings.size()
+	GUIDE.enable_mapping_context(context_mappings[current_mapping])
+	context_changed.emit()
+
+
 
 func _restart() -> void:
 	physics_tick = 0
@@ -109,6 +129,7 @@ func change_scene(file_name : String):
 	save()
 	load_game()
 	get_tree().change_scene_to_file(file_name)
+
 
 func save():
 	var save_resource : global_save = global_save.new()

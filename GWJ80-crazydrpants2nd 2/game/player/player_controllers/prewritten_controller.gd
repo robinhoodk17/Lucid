@@ -13,8 +13,11 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	var hiding = false
 	if physics_tick >= frame_info.size():
 		physics_tick = frame_info.size()-1
+		player.hide()
+		hiding = true
 	player.global_position = frame_info[physics_tick]["position"]
 	playermodel.global_basis = frame_info[physics_tick]["rotation"]
 	var current_input : String = frame_info[physics_tick]["input"]
@@ -22,6 +25,10 @@ func _physics_process(delta: float) -> void:
 	#print_debug(frame_info[physics_tick])
 	if current_input == "dash":
 		player.spin()
+	if Globals.scene_name == frame_info[physics_tick]["scene"] and !hiding:
+		player.show()
+	else:
+		player.hide()
 	physics_tick += 1 * Globals.time_scale
 
 

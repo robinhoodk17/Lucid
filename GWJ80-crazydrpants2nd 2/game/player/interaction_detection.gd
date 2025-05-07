@@ -1,8 +1,14 @@
 extends Area3D
 
 var showing_which : Node3D
+@onready var player: CharacterBody3D = $"../.."
 
-func _process(delta : float) -> void:	
+func _process(delta : float) -> void:
+	if !player.visible:
+		if showing_which != null:
+			showing_which.turn_off_prompt()
+			showing_which = null
+		return
 	var overlapping_bodies : Array[Node3D] = get_overlapping_bodies()
 	
 

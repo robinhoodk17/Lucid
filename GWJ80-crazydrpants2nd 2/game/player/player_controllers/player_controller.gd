@@ -134,7 +134,7 @@ func _physics_process(delta: float) -> void:
 			#if grabbing != null:
 				#grabbing.drop()
 				#grabbing = null
-	var frame_info : Dictionary = {"position" : player.global_position, "rotation" : playermodel.global_basis, "input" : ""}
+	var frame_info : Dictionary = {"position" : player.global_position, "rotation" : playermodel.global_basis, "input" : "", "scene" : Globals.scene_name}
 	Globals.append_frame_data(frame_info)
 	
 	#I added this Vector.ZERO because otherwise, the player keeps the last input after you unpause
@@ -207,7 +207,7 @@ func handle_time_freeze() -> void:
 			interaction_detection.showing_which.freeze_in_time(playermodel, self)
 			return
 	if dash_cooldown_timer.is_stopped():
-		var frame_info : Dictionary = {"position" : player.global_position, "rotation" : playermodel.global_basis, "input" : "dash"}
+		var frame_info : Dictionary = {"position" : player.global_position, "rotation" : playermodel.global_basis, "input" : "dash", "scene" : Globals.scene_name}
 		Globals.append_frame_data(frame_info)
 		player.spin()
 		current_dash_multiplier = dash_speed_multiplier

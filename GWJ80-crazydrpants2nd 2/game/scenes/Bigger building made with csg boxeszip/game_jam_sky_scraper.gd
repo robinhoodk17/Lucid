@@ -1,16 +1,16 @@
 extends Node3D
 
-@export var default_mapping_context: GUIDEMappingContext
+@export var scene_name : int = 0
 #@onready var ui: CanvasLayer = $UI
 @onready var camera_pivot: player_controller = $NPCs/Player/camera_pivot
 
 func _ready() -> void:
+	Globals.scene_name = scene_name
 	call_deferred("late_ready")
 
 
 func  late_ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	GUIDE.enable_mapping_context(default_mapping_context)
 	Ui.get_node("PauseMenu").pausable = true
 	Ui.go_to("Game")
 	if Globals.newload:
