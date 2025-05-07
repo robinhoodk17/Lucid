@@ -5,6 +5,7 @@ extends RichTextLabel
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	call_deferred("update_label")
+	Globals.context_changed.connect(update_label)
 
 
 func update_label() -> void:
