@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dlo2fp5slhed7"]
+[gd_scene load_steps=5 format=3 uid="uid://dlo2fp5slhed7"]
 
 [ext_resource type="PackedScene" uid="uid://88f70ly0w5b4" path="res://game/npc/master/npc.tscn" id="1_6oblu"]
 [ext_resource type="PackedScene" uid="uid://cdpyyybi138c8" path="res://game/npc/cee/Cee Hive.tscn" id="2_u57a2"]
 [ext_resource type="Script" uid="uid://cjenbexlc4qiq" path="res://game/npc/cee/cee_hive_main.gd" id="2_xy0ei"]
+[ext_resource type="BehaviorTree" uid="uid://bk0medvv2r0pt" path="res://game/npc/cee/logic_trees/cee_dialogic.tres" id="4_2aoa6"]
 
 [node name="Cee" node_paths=PackedStringArray("ice_skates", "ice_skate_timer", "animation_player") instance=ExtResource("1_6oblu")]
 script = ExtResource("2_xy0ei")
@@ -21,5 +22,8 @@ visible = false
 autoplay = "idle"
 
 [node name="IceSkatesTimer" type="Timer" parent="." index="7"]
+
+[node name="Dialogic" parent="." index="8"]
+behavior_tree = ExtResource("4_2aoa6")
 
 [editable path="cee hive"]

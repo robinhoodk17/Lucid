@@ -190,6 +190,11 @@ func load_game() -> void:
 	extendable_load()
 
 
+func report_errors():
+	print_debug("time: ", Globals.current_time)
+	print_debug("logic_variables: ", logic_variables)
+
+
 func extendable_load():
 	###Implemented by sub-classes###
 	pass

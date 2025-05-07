@@ -23,6 +23,7 @@ camera_control = ExtResource("4_5df8n")
 interact_action = ExtResource("5_bcob5")
 reset_camera = ExtResource("6_w85yc")
 hover_action = ExtResource("8_xqxmv")
+dash_cooldown = 0.35
 offset = Vector3(0, 1.25, 0)
 
 [node name="SpringArm3D" type="SpringArm3D" parent="."]
@@ -49,4 +50,7 @@ one_shot = true
 one_shot = true
 
 [node name="DashTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="DashCooldown" type="Timer" parent="."]
 one_shot = true

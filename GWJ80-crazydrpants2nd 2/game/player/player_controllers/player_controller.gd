@@ -1,6 +1,8 @@
 extends Node3D
 class_name player_controller
 
+const SAVE_GAME_PATH : String = "user://"
+
 @export_category("GUIDE actions")
 @export var time_freeze : GUIDEAction
 @export var move_action : GUIDEAction
@@ -17,8 +19,10 @@ class_name player_controller
 @export var jump_velocity : float= 7.0
 @export var hover_delay : float = .8
 @export var dash_speed_multiplier : float = 5.0
-@export var dash_duration : float = 0.25
 @export var dash_cooldown : float = 1.0
+@onready var dash_timer: Timer = $DashTimer
+@onready var dash_cooldown_timer: Timer = $DashCooldown
+
 const ROTATION_SPEED : float = 6.0
 var current_dash_multiplier : float = 1.0
 var hovering : bool = false
@@ -49,17 +53,15 @@ var player_animation_state : animation_state = animation_state.IDLE
 @onready var player: CharacterBody3D = $".."
 @onready var spring_arm: SpringArm3D = $SpringArm3D
 @onready var interaction_detection: Area3D = $"../playermodel/InteractionDetection"
-@onready var trail_timer: Timer = $"../TrailTimer"
-@onready var dash_trail: Node3D = $"../playermodel/DashTrail"
-@onready var dash_timer: Timer = $DashTimer
 
 var original_position : Vector3
 var original_rotation : Basis
 var dampened_y_array : Array[float] = [0.0, 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0, 0.0, 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
 var current_y : int = 0
 var averaged_y : float = 0.0
-func  _ready() -> void:
-	trail_timer.timeout.connect(turn_off_trail)
+func _ready() -> void:
+	Globals.saved.connect(save)
+	Globals.loaded.connect(load_game)
 	top_level = true
 	time_freeze.triggered.connect(handle_time_freeze)
 	fly_action.triggered.connect(handle_jump)
@@ -76,8 +78,8 @@ func  _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	var current_speed : float = speed * current_dash_multiplier
-	if !trail_timer.is_stopped():
-		var duration_left_in_seconds : float = (dash_speed_multiplier - 1.0)/dash_duration
+	if !dash_timer.is_stopped():
+		var duration_left_in_seconds : float = (dash_speed_multiplier - 1.0)/player.dash_duration
 		current_dash_multiplier = move_toward(current_dash_multiplier,1.0, duration_left_in_seconds * delta)
 		
 	if reset_action_current_cooldown < reset_action_cooldown:
@@ -120,7 +122,7 @@ func _physics_process(delta: float) -> void:
 		#player.velocity.y = jump_velocity
 		#hover_timer.start(hover_delay)
 		
-	var talk : Dictionary = {"talk_started" : false, "npc" : null, "talk_result" : NPC.gamestate.NORMAL}
+	#var talk : Dictionary = {"talk_started" : false, "npc" : null, "talk_result" : NPC.gamestate.NORMAL}
 	#if time_freeze.is_triggered():
 		#if interaction_detection.showing_which != null:
 			#if interaction_detection.showing_which.is_in_group("item"):
@@ -132,7 +134,7 @@ func _physics_process(delta: float) -> void:
 			#if grabbing != null:
 				#grabbing.drop()
 				#grabbing = null
-	var frame_info : Dictionary = {"position" : player.global_position, "rotation" : playermodel.global_basis, "talk" : talk}
+	var frame_info : Dictionary = {"position" : player.global_position, "rotation" : playermodel.global_basis, "input" : ""}
 	Globals.append_frame_data(frame_info)
 	
 	#I added this Vector.ZERO because otherwise, the player keeps the last input after you unpause
@@ -191,10 +193,6 @@ func rotate_model(direction: Vector3, delta : float) -> void:
 	playermodel.basis = lerp(playermodel.basis, Basis.looking_at(direction), 10.0 * delta)
 
 
-func turn_off_trail() -> void:
-	dash_trail.hide()
-
-
 func restarted() -> void:
 	player.global_position = original_position
 	player.global_basis = original_rotation
@@ -208,24 +206,13 @@ func handle_time_freeze() -> void:
 		if interaction_detection.showing_which.is_in_group("item"):
 			interaction_detection.showing_which.freeze_in_time(playermodel, self)
 			return
-	if dash_timer.is_stopped():
-		dash_trail.show()
-		trail_timer.start(dash_duration)
+	if dash_cooldown_timer.is_stopped():
+		var frame_info : Dictionary = {"position" : player.global_position, "rotation" : playermodel.global_basis, "input" : "dash"}
+		Globals.append_frame_data(frame_info)
+		player.spin()
 		current_dash_multiplier = dash_speed_multiplier
-		doFullCircle()
-		dash_timer.start(dash_cooldown)
-
-
-func doFullCircle(axis : String = "z"):
-	randomize()
-	var leftorRight : int = -1
-	if randi_range(0,1):
-		leftorRight = 1
-	var target_rotation = playermodel.rotation
-	if axis == "z":
-		target_rotation.z += PI*2 * leftorRight
-	var rotate_tween = get_tree().create_tween()
-	rotate_tween.tween_property(playermodel, "rotation", target_rotation, dash_duration).set_trans(Tween.TRANS_LINEAR)
+		dash_timer.start(player.dash_duration)
+		dash_cooldown_timer.start(dash_cooldown)
 
 
 func handle_hover() -> void:
@@ -236,7 +223,7 @@ func handle_jump() -> void:
 	if disabled:
 		return
 	hovering = false
-	player.velocity.y = jump_velocity
+	player.velocity.y = jump_velocity/Globals.time_scale
 	hover_timer.start(hover_delay)
 
 
@@ -249,6 +236,34 @@ func handle_interaction() -> void:
 		if grabbing != null:
 			grabbing.drop()
 			grabbing = null
+
+
+func save() -> void:
+	var save_path = str(SAVE_GAME_PATH, "player_controller.tres")
+	var save_resource : player_save = player_save.new()
+	save_resource.position = player.global_position
+	save_resource.rotation = playermodel.basis
+	if grabbing:
+		save_resource.grabbing = true
+	else:
+		save_resource.grabbing = false
+	ResourceSaver.save(save_resource, save_path)
+	
+
+
+func load_game() -> void:
+	var save_path = str(SAVE_GAME_PATH, "player_controller.tres")
+	if !ResourceLoader.exists(save_path):
+		print_debug(name, "  tried to load")
+		return
+	
+	var saved_resource : player_save = load(save_path) as player_save
+	if saved_resource.grabbing:
+		pass
+	if !Globals.travelling:
+		player.global_position = saved_resource.position
+		global_position = saved_resource.position + offset
+		playermodel.basis = saved_resource.rotation
 
 
 func reenable() -> void:

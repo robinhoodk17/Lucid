@@ -1,6 +1,6 @@
 extends VBoxContainer
 
-@export var NPC_name : String = "vinny"
+@export var NPC_name : Globals.npc_names = Globals.npc_names.VINNY
 
 func _ready() -> void:
 	Globals.on_quest_progress.connect(quest_progress)

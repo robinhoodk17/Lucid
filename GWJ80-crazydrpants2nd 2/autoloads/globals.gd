@@ -26,6 +26,8 @@ const PREWRITTEN_CONTROLLER : PackedScene = preload("res://game/player/player_co
 const PLAYER : PackedScene = preload("res://game/player/player.tscn")
 const SAVE_GAME_PATH : String = "user://save.tres"
 @export var quest_status : Dictionary
+var area_player_spawn : int = 1
+var travelling : bool = false
 var first_time_playing : bool = true
 var newload : bool = false
 var time_scale : float = 1.0
@@ -105,8 +107,8 @@ func change_scene(file_name : String):
 	LoadingScreen.start_load()
 	await LoadingScreen.finished_entering
 	save()
-	get_tree().change_scene_to_file(file_name)
 	load_game()
+	get_tree().change_scene_to_file(file_name)
 
 func save():
 	var save_resource : global_save = global_save.new()

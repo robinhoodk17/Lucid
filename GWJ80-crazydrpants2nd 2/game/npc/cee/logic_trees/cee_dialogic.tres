@@ -1,0 +1,57 @@
+[gd_resource type="BehaviorTree" load_steps=17 format=3 uid="uid://bk0medvv2r0pt"]
+
+[ext_resource type="Script" uid="uid://o6bta4ja72tm" path="res://addons/limboai/ai/tasks/quest_status.gd" id="1_2okqp"]
+[ext_resource type="Script" uid="uid://bmho5emqakfqt" path="res://addons/limboai/ai/tasks/check_var.gd" id="2_snf4w"]
+[ext_resource type="Script" uid="uid://swj2dso4mk8x" path="res://addons/limboai/ai/tasks/start_dialogic.gd" id="3_n53h3"]
+[ext_resource type="Script" uid="uid://ds4vtyfbfg7qt" path="res://addons/limboai/ai/tasks/time_period.gd" id="4_n53h3"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_xh4tm"]
+
+[sub_resource type="BTCondition" id="BTCondition_ph5vd"]
+script = ExtResource("1_2okqp")
+quest_name = 13
+quest_progress = 0
+
+[sub_resource type="BTCondition" id="BTCondition_is8jf"]
+script = ExtResource("2_snf4w")
+variable_name = "convinced_barry_quest"
+threshold = 100
+
+[sub_resource type="BTInvert" id="BTInvert_y37de"]
+children = [SubResource("BTCondition_is8jf")]
+
+[sub_resource type="BTAction" id="BTAction_m1y4h"]
+script = ExtResource("3_n53h3")
+timeline = "cee_barry_quest"
+
+[sub_resource type="BTSequence" id="BTSequence_snf4w"]
+custom_name = "cee_barry_quest"
+children = [SubResource("BTCondition_ph5vd"), SubResource("BTInvert_y37de"), SubResource("BTAction_m1y4h")]
+
+[sub_resource type="BTCondition" id="BTCondition_y37de"]
+script = ExtResource("4_n53h3")
+early = 0.0
+late = 60.0
+
+[sub_resource type="BTCondition" id="BTCondition_m1y4h"]
+script = ExtResource("2_snf4w")
+variable_name = "technique"
+threshold = 100
+
+[sub_resource type="BTInvert" id="BTInvert_bdti4"]
+children = [SubResource("BTCondition_m1y4h")]
+
+[sub_resource type="BTAction" id="BTAction_n53h3"]
+script = ExtResource("3_n53h3")
+timeline = "cee_looks_at_stain"
+
+[sub_resource type="BTSequence" id="BTSequence_yc08c"]
+custom_name = "cee_looks_at_stain"
+children = [SubResource("BTCondition_y37de"), SubResource("BTInvert_bdti4"), SubResource("BTAction_n53h3")]
+
+[sub_resource type="BTSelector" id="BTSelector_n53h3"]
+children = [SubResource("BTSequence_snf4w"), SubResource("BTSequence_yc08c")]
+
+[resource]
+blackboard_plan = SubResource("BlackboardPlan_xh4tm")
+root_task = SubResource("BTSelector_n53h3")

@@ -17,10 +17,11 @@ func _physics_process(delta: float) -> void:
 		physics_tick = frame_info.size()-1
 	player.global_position = frame_info[physics_tick]["position"]
 	playermodel.global_basis = frame_info[physics_tick]["rotation"]
-	var current_talk : Dictionary = frame_info[physics_tick]["talk"]
+	var current_input : String = frame_info[physics_tick]["input"]
+	#var current_talk : Dictionary = frame_info[physics_tick]["talk"]
 	#print_debug(frame_info[physics_tick])
-	if current_talk["talk_started"]:
-		current_talk["npc"].current_gamestate = current_talk["talk_result"]
+	if current_input == "dash":
+		player.spin()
 	physics_tick += 1 * Globals.time_scale
 
 
