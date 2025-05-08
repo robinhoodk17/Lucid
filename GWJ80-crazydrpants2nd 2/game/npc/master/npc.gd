@@ -9,7 +9,7 @@ const SAVE_GAME_PATH : String = "user://"
 @export var route_manager : AnimationPlayer
 @export var timer : Timer
 @export var dialogic : BTPlayer
-@export var madtalk : BTPlayer
+@export var madtalk_master_node : madtalk_master
 @export_subgroup("Dialogue and routes")
 @export var can_interact : float = 0.0
 ##the keys are when the event happens, and the values are eventRoute resources with
@@ -108,6 +108,8 @@ func display_prompt() -> void:
 		if pop_up.visible:
 			return
 		pop_up.pop_up_show()
+	if madtalk_master_node:
+		madtalk_master_node.start_popup()
 
 
 func turn_off_prompt() -> void:

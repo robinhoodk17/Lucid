@@ -1,21 +1,18 @@
-[gd_scene load_steps=6 format=3 uid="uid://88f70ly0w5b4"]
+[gd_scene load_steps=7 format=3 uid="uid://88f70ly0w5b4"]
 
 [ext_resource type="Script" uid="uid://cq7kng0d2y4lm" path="res://game/npc/master/npc.gd" id="1_gixkv"]
 [ext_resource type="PackedScene" uid="uid://v6l3630gxqxn" path="res://game/npc/pop_up.tscn" id="2_j63dq"]
+[ext_resource type="PackedScene" uid="uid://cogoqe1xfcno" path="res://game/npc/master/madtalk_popup.tscn" id="3_6xvvu"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_j63dq"]
 radius = 1.0
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_j63dq"]
-var/convinced_barry_quest/name = &"convinced_barry_quest"
-var/convinced_barry_quest/type = 1
-var/convinced_barry_quest/value = false
-var/convinced_barry_quest/hint = 0
-var/convinced_barry_quest/hint_string = "0-100"
 
-[sub_resource type="BlackboardPlan" id="BlackboardPlan_6bren"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_wum8w"]
+viewport_path = NodePath("SubViewport")
 
-[node name="NPC" type="CharacterBody3D" node_paths=PackedStringArray("animation_player", "route_manager", "timer", "dialogic", "madtalk") groups=["interactable"]]
+[node name="NPC" type="CharacterBody3D" node_paths=PackedStringArray("animation_player", "route_manager", "timer", "dialogic", "madtalk_master_node") groups=["interactable"]]
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_gixkv")
@@ -23,7 +20,7 @@ animation_player = NodePath("AnimationPlayer")
 route_manager = NodePath("RouteManager")
 timer = NodePath("Timer")
 dialogic = NodePath("Dialogic")
-madtalk = NodePath("Madtalk")
+madtalk_master_node = NodePath("MadtalkMaster")
 
 [node name="Collider" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_j63dq")
@@ -45,6 +42,10 @@ message = "Talk"
 update_mode = 2
 blackboard_plan = SubResource("BlackboardPlan_j63dq")
 
-[node name="Madtalk" type="BTPlayer" parent="."]
+[node name="MadtalkMaster" parent="." instance=ExtResource("3_6xvvu")]
+texture = SubResource("ViewportTexture_wum8w")
+
+[node name="MadtalkLogic" parent="MadtalkMaster" index="3"]
 update_mode = 2
-blackboard_plan = SubResource("BlackboardPlan_6bren")
+
+[editable path="MadtalkMaster"]

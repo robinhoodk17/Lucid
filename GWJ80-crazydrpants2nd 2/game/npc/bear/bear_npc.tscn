@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://s60xl4keq2rt"]
+[gd_scene load_steps=19 format=4 uid="uid://s60xl4keq2rt"]
 
 [ext_resource type="PackedScene" uid="uid://88f70ly0w5b4" path="res://game/npc/master/npc.tscn" id="1_kr6oh"]
 [ext_resource type="Script" uid="uid://besjuj54iwv8k" path="res://game/npc/bear/bear_npc.gd" id="2_bf144"]
@@ -4389,6 +4389,9 @@ _data = {
 &"walk": SubResource("Animation_bsoqj")
 }
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_wum8w"]
+viewport_path = NodePath("SubViewport")
+
 [node name="NPC" instance=ExtResource("1_kr6oh")]
 script = ExtResource("2_bf144")
 
@@ -5951,3 +5954,8 @@ libraries = {
 &"": SubResource("AnimationLibrary_yh2qs")
 }
 autoplay = "Idle"
+
+[node name="MadtalkMaster" parent="." index="8"]
+texture = SubResource("ViewportTexture_wum8w")
+
+[editable path="MadtalkMaster"]

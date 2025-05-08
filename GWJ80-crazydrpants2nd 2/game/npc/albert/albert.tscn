@@ -1,13 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://bltoelro6d67q"]
+[gd_scene load_steps=8 format=3 uid="uid://bltoelro6d67q"]
 
 [ext_resource type="PackedScene" uid="uid://88f70ly0w5b4" path="res://game/npc/master/npc.tscn" id="1_s0fck"]
 [ext_resource type="Script" uid="uid://bqe7orti3pgem" path="res://game/npc/albert/albert.gd" id="2_iu43e"]
 [ext_resource type="BehaviorTree" uid="uid://cbs7oy6st6o55" path="res://game/npc/albert/albert_dialogue_tree.tres" id="3_7o5ji"]
+[ext_resource type="BehaviorTree" uid="uid://rbyjkyaojkis" path="res://game/npc/albert/behavior_trees/madtalk_tree.tres" id="4_72gjd"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_iu43e"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_7o5ji"]
 size = Vector3(0.4, 0.2, 0.555)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_72gjd"]
+viewport_path = NodePath("MadtalkMaster/SubViewport")
 
 [node name="Albert" instance=ExtResource("1_s0fck")]
 script = ExtResource("2_iu43e")
@@ -27,3 +31,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5929, 0)
 
 [node name="Dialogic" parent="." index="6"]
 behavior_tree = ExtResource("3_7o5ji")
+
+[node name="MadtalkMaster" parent="." index="7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.9301, 0)
+texture = SubResource("ViewportTexture_72gjd")
+
+[node name="MadtalkLogic" parent="MadtalkMaster" index="3"]
+behavior_tree = ExtResource("4_72gjd")
+
+[editable path="MadtalkMaster"]
