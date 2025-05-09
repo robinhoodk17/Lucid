@@ -3,13 +3,13 @@ class_name NPC
 
 enum states{IDLE, WALKING, TALKING}
 enum gamestate{NORMAL, SABOTAGED, HELPED}
+enum moods{HAPPY, SAD, AFRAID, NONE}
 const SAVE_GAME_PATH : String = "user://"
-@export_subgroup("Nodes")
-@export var animation_player : AnimationPlayer
-@export var route_manager : AnimationPlayer
-@export var timer : Timer
+@export_subgroup("need_setup")
 @export var dialogic : BTPlayer
-@export var madtalk_master_node : madtalk_master
+@export var madtalk_logic : BTPlayer
+@export var route_manager : AnimationPlayer
+
 @export_subgroup("Dialogue and routes")
 @export var can_interact : float = 0.0
 ##the keys are when the event happens, and the values are eventRoute resources with
@@ -18,8 +18,14 @@ const SAVE_GAME_PATH : String = "user://"
 @export var moving_times : Dictionary[float, eventRoute]
 ##a dictionary containing where the item should be at certain timepoints
 @export var places : Dictionary[float, Marker3D]
-@onready var pop_up: Node3D = $PopUp
 
+@export_subgroup("Nodes")
+@export var animation_player : AnimationPlayer
+@export var timer : Timer
+@export var madtalk_master_node : madtalk_master
+@onready var pop_up: Node3D = $PopUp
+@onready var route_logic: BTPlayer = $RouteLogic
+var route_logic_result : bool = false
 var moving_towards : Marker3D = null
 var current_state : states = states.IDLE
 var current_gamestate : gamestate = gamestate.NORMAL
@@ -32,10 +38,12 @@ var random_talks : int = 0
 var quest_completed : bool = false
 
 func _ready() -> void:
+	route_logic.behavior_tree_finished.connect(route_logic_func)
 	Globals.saved.connect(save)
 	Globals.loaded.connect(load_game)
 	Dialogic.timeline_ended.connect(unpause)
 	Dialogic.signal_event.connect(handle_dialogue_end)
+	madtalk_master_node.madtalk_logic = madtalk_logic
 	original_position = global_position
 	original_rotation = global_basis
 	timer.timeout.connect(start_walking)
@@ -55,6 +63,16 @@ func _ready() -> void:
 	Globals.on_quest_end.connect(finish_quest)
 
 
+func route_logic_func(status : int) -> bool:
+	match status:
+		2:
+			return false
+		3: 
+			print_debug("ran a route logic", name)
+			return true
+	return false
+
+
 func back_to_idle() -> void:
 	current_state = states.IDLE
 	if animation_player.has_animation("idle"):
@@ -71,6 +89,10 @@ func start_walking() -> void:
 	if current_event <= 0.0:
 		return
 	var acceptable_states : Array[gamestate] = moving_times[current_event].acceptable_states
+	route_logic.behavior_tree = moving_times[current_event].dialogue_logic
+	route_logic.update(.01)
+	if route_logic_result:
+		route_manager.play(moving_times[current_event].route)
 	if current_gamestate in acceptable_states:
 		current_state = states.WALKING
 		route_manager.play(moving_times[current_event].route)
@@ -124,7 +146,7 @@ func interact(_playermodel : Node3D, _player_controller : player_controller) -> 
 	handle_dialogue_start(_player_controller)
 
 
-func start_dialogue(timeline : String) -> void:
+func start_dialogue(timeline : String, mood : moods = moods.NONE) -> void:
 	if DialogicResourceUtil.get_timeline_resource(timeline) == null:
 		print_debug("timeline missing:  ", timeline)
 		Dialogic.start("whoops")

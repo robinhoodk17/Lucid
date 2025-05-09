@@ -19,7 +19,8 @@ func start_popup() -> void:
 	if visible:
 		print_debug("is during dialogue")
 		return
-	madtalk_logic.update(.01)
+	if madtalk_logic:
+		madtalk_logic.update(.01)
 
 func start_dialogue(sheet_id) -> void:
 	show()

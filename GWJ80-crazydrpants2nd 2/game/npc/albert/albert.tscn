@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bltoelro6d67q"]
+[gd_scene load_steps=9 format=3 uid="uid://bltoelro6d67q"]
 
 [ext_resource type="PackedScene" uid="uid://88f70ly0w5b4" path="res://game/npc/master/npc.tscn" id="1_s0fck"]
 [ext_resource type="Script" uid="uid://bqe7orti3pgem" path="res://game/npc/albert/albert.gd" id="2_iu43e"]
@@ -10,11 +10,14 @@
 [sub_resource type="BoxMesh" id="BoxMesh_7o5ji"]
 size = Vector3(0.4, 0.2, 0.555)
 
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_72gjd"]
+
 [sub_resource type="ViewportTexture" id="ViewportTexture_72gjd"]
 viewport_path = NodePath("SubViewport")
 
-[node name="Albert" instance=ExtResource("1_s0fck")]
+[node name="Albert" node_paths=PackedStringArray("madtalk_logic") instance=ExtResource("1_s0fck")]
 script = ExtResource("2_iu43e")
+madtalk_logic = NodePath("MadtalkLogic")
 
 [node name="Collider" parent="." index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0796895, 0)
@@ -32,7 +35,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5929, 0)
 [node name="Dialogic" parent="." index="6"]
 behavior_tree = ExtResource("3_7o5ji")
 
-[node name="MadtalkMaster" parent="." index="7"]
+[node name="MadtalkLogic" type="BTPlayer" parent="." index="7"]
+behavior_tree = ExtResource("4_72gjd")
+agent_node = NodePath("../MadtalkMaster")
+update_mode = 2
+blackboard_plan = SubResource("BlackboardPlan_72gjd")
+
+[node name="MadtalkMaster" parent="." index="8"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.9301, 0)
 texture = SubResource("ViewportTexture_72gjd")
 

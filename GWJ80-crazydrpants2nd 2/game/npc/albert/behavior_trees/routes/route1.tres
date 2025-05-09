@@ -1,0 +1,34 @@
+[gd_resource type="BehaviorTree" load_steps=7 format=3 uid="uid://c17o6kvrd66nf"]
+
+[ext_resource type="Script" uid="uid://ddp7pg7bsybhe" path="res://addons/limboai/ai/tasks/npc_gamestate.gd" id="1_2xsg5"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_iu5ib"]
+var/cheese_delivered/name = &"cheese_delivered"
+var/cheese_delivered/type = 2
+var/cheese_delivered/value = 0
+var/cheese_delivered/hint = 1
+var/cheese_delivered/hint_string = "0-100"
+var/meeting_occurred/name = &"meeting_occurred"
+var/meeting_occurred/type = 2
+var/meeting_occurred/value = 0
+var/meeting_occurred/hint = 1
+var/meeting_occurred/hint_string = "0-100"
+
+[sub_resource type="BTCondition" id="BTCondition_fdht0"]
+script = ExtResource("1_2xsg5")
+game_state = 0
+
+[sub_resource type="BTCondition" id="BTCondition_6y1y4"]
+script = ExtResource("1_2xsg5")
+game_state = 1
+
+[sub_resource type="BTCondition" id="BTCondition_bf81u"]
+script = ExtResource("1_2xsg5")
+game_state = 2
+
+[sub_resource type="BTSelector" id="BTSelector_h3shk"]
+children = [SubResource("BTCondition_fdht0"), SubResource("BTCondition_6y1y4"), SubResource("BTCondition_bf81u")]
+
+[resource]
+blackboard_plan = SubResource("BlackboardPlan_iu5ib")
+root_task = SubResource("BTSelector_h3shk")

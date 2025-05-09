@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://88f70ly0w5b4"]
+[gd_scene load_steps=10 format=3 uid="uid://88f70ly0w5b4"]
 
 [ext_resource type="Script" uid="uid://cq7kng0d2y4lm" path="res://game/npc/master/npc.gd" id="1_gixkv"]
 [ext_resource type="PackedScene" uid="uid://v6l3630gxqxn" path="res://game/npc/pop_up.tscn" id="2_j63dq"]
@@ -12,14 +12,21 @@ radius = 1.0
 [sub_resource type="ViewportTexture" id="ViewportTexture_wum8w"]
 viewport_path = NodePath("SubViewport")
 
-[node name="NPC" type="CharacterBody3D" node_paths=PackedStringArray("animation_player", "route_manager", "timer", "dialogic", "madtalk_master_node") groups=["interactable"]]
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_6xvvu"]
+
+[sub_resource type="BehaviorTree" id="BehaviorTree_0dyxd"]
+blackboard_plan = SubResource("BlackboardPlan_6xvvu")
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_6bren"]
+
+[node name="NPC" type="CharacterBody3D" node_paths=PackedStringArray("dialogic", "route_manager", "animation_player", "timer", "madtalk_master_node") groups=["interactable"]]
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_gixkv")
-animation_player = NodePath("AnimationPlayer")
-route_manager = NodePath("RouteManager")
-timer = NodePath("Timer")
 dialogic = NodePath("Dialogic")
+route_manager = NodePath("RouteManager")
+animation_player = NodePath("AnimationPlayer")
+timer = NodePath("Timer")
 madtalk_master_node = NodePath("MadtalkMaster")
 
 [node name="Collider" type="CollisionShape3D" parent="."]
@@ -47,5 +54,10 @@ texture = SubResource("ViewportTexture_wum8w")
 
 [node name="MadtalkLogic" parent="MadtalkMaster" index="3"]
 update_mode = 2
+
+[node name="RouteLogic" type="BTPlayer" parent="."]
+behavior_tree = SubResource("BehaviorTree_0dyxd")
+update_mode = 2
+blackboard_plan = SubResource("BlackboardPlan_6bren")
 
 [editable path="MadtalkMaster"]
