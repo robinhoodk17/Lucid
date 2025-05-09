@@ -12,7 +12,8 @@ config_version=5
 
 config/name="GWJ80"
 config/description="Godot 4 template project for game jams"
-run/main_scene="res://game/scenes/main.tscn"
+config/tags=PackedStringArray("2")
+run/main_scene="uid://b600ql2so1y32"
 config/features=PackedStringArray("4.4")
 boot_splash/bg_color=Color(0.0784314, 0.133333, 0.25098, 1)
 boot_splash/show_image=false
@@ -75,7 +76,7 @@ directories/dtl_directory={
 "barry_waits_for_help": "res://game/npc/barry/timelines/barry_waits_for_help.dtl",
 "better_working_conditions": "res://game/npc/barry/timelines/better_working_conditions.dtl",
 "butterfly_council": "res://game/timelines/butterfly_council.dtl",
-"cee_barry_quest": "res://game/timelines/cee_barry_quest.dtl",
+"cee_barry_quest": "res://game/npc/cee/timelines/cee_barry_quest.dtl",
 "cee_chils_in_cafeteria": "res://game/npc/cee/timelines/cee_chils_in_cafeteria.dtl",
 "cee_in_clean_room": "res://game/npc/cee/timelines/cee_in_clean_room.dtl",
 "cee_in_love_with_dee": "res://game/npc/cee/timelines/cee_in_love_with_dee.dtl",
@@ -150,13 +151,11 @@ directories/dtl_directory={
 "opening_scrawl": "res://game/timelines/opening_scrawl.dtl",
 "our_love_is_doomed": "res://game/npc/vinny/timelines/our_love_is_doomed.dtl",
 "please_deliver": "res://game/npc/vinny/timelines/please_deliver.dtl",
-"queen_bee/were_running_away": "res://game/npc/queen_bee/were_running_away.dtl",
 "queen_bee_plan": "res://game/npc/queen_bee/queen_bee_plan.dtl",
-"romulus/romulus_stop_that": "res://game/npc/romulus/romulus_stop_that.dtl",
 "romulus_albert_quest": "res://game/npc/romulus/timelines/romulus_albert_quest.dtl",
 "romulus_hope_piggy_is_ok": "res://game/npc/romulus/timelines/romulus_hope_piggy_is_ok.dtl",
 "romulus_my_sons_college": "res://game/npc/romulus/timelines/romulus_my_sons_college.dtl",
-"romulus_stop_that": "res://game/npc/romulus/timelines/romulus_stop_that.dtl",
+"romulus_stop_that": "res://game/npc/romulus/romulus_stop_that.dtl",
 "romulus_too_busy_to_talk": "res://game/npc/romulus/timelines/romulus_too_busy_to_talk.dtl",
 "romulus_too_late_to_use_this": "res://game/npc/romulus/timelines/romulus_too_late_to_use_this.dtl",
 "romulus_will_publish_this_to_become_ceo": "res://game/npc/romulus/timelines/romulus_will_publish_this_to_become_ceo.dtl",
@@ -164,12 +163,14 @@ directories/dtl_directory={
 "still_need_approval": "res://game/npc/barry/timelines/still_need_approval.dtl",
 "this_is_a_paper_shredder": "res://game/interactables/shredder/this_is_a_paper_shredder.dtl",
 "timeline": "res://game/quest/timeline.dtl",
-"timelines/cee_barry_quest": "res://game/npc/cee/timelines/cee_barry_quest.dtl",
+"timelines/cee_barry_quest": "res://game/timelines/cee_barry_quest.dtl",
+"timelines/romulus_stop_that": "res://game/npc/romulus/timelines/romulus_stop_that.dtl",
+"timelines/were_running_away": "res://game/npc/vinny/timelines/were_running_away.dtl",
 "too_late_for_the_plan": "res://game/npc/queen_bee/too_late_for_the_plan.dtl",
 "vinny_and_queen": "res://game/npc/vinny/timelines/vinny_and_queen.dtl",
 "waiting_for_the_plan": "res://game/npc/queen_bee/waiting_for_the_plan.dtl",
 "waiting_to_run_away": "res://game/npc/queen_bee/waiting_to_run_away.dtl",
-"were_running_away": "res://game/npc/vinny/timelines/were_running_away.dtl",
+"were_running_away": "res://game/npc/queen_bee/were_running_away.dtl",
 "whoops": "res://game/timelines/whoops.dtl",
 "you_cant_shred_this": "res://game/interactables/shredder/you_cant_shred_this.dtl",
 "you_destroyed_this_mail": "res://game/interactables/shredder/you_destroyed_this_mail.dtl"
