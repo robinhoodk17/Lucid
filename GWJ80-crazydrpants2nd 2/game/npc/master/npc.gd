@@ -9,7 +9,7 @@ const SAVE_GAME_PATH : String = "user://"
 @export var route_manager : AnimationPlayer
 @export var timer : Timer
 @export var dialogic : BTPlayer
-@export var madtalk : BTPlayer
+@export var madtalk_master_node : madtalk_master
 @export_subgroup("Dialogue and routes")
 @export var can_interact : float = 0.0
 ##the keys are when the event happens, and the values are eventRoute resources with
@@ -80,7 +80,7 @@ func start_walking() -> void:
 		animation_player.play("walk")
 	if animation_player.has_animation("Walk"):
 		animation_player.play("Walk")
-
+	madtalk_master_node.abort_dialogue()
 	var candidate_time : float = 6000
 	for i : float in moving_times.keys():
 		if i < candidate_time and i > Globals.current_time and i != current_event:
@@ -108,6 +108,8 @@ func display_prompt() -> void:
 		if pop_up.visible:
 			return
 		pop_up.pop_up_show()
+	if madtalk_master_node:
+		madtalk_master_node.start_popup()
 
 
 func turn_off_prompt() -> void:
@@ -133,6 +135,7 @@ func start_dialogue(timeline : String) -> void:
 		Dialogic.process_mode = Node.PROCESS_MODE_ALWAYS
 		@warning_ignore("untyped_declaration")
 		Dialogic.timeline_ended.connect(func():player_control.reenable())
+		madtalk_master_node.abort_dialogue()
 	#get_tree().paused = true
 	#Global.playing = false
 	

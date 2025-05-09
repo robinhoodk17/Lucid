@@ -1,10 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://cwxwhnqgqi07k"]
+[gd_scene load_steps=6 format=3 uid="uid://cwxwhnqgqi07k"]
 
 [ext_resource type="PackedScene" uid="uid://v6l3630gxqxn" path="res://game/npc/pop_up.tscn" id="1_gor47"]
 [ext_resource type="Script" uid="uid://x3s3h3261tbl" path="res://game/scenes/travel_popup.gd" id="1_jwegy"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_jwegy"]
 size = Vector3(0.25, 0.25, 0.25)
+
+[sub_resource type="Gradient" id="Gradient_jwegy"]
+colors = PackedColorArray(1, 0, 0, 1, 1, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_nbq24"]
+gradient = SubResource("Gradient_jwegy")
+fill_from = Vector2(0, 0.509971)
+fill_to = Vector2(1, 0.527066)
 
 [node name="Travel" type="CharacterBody3D" groups=["interactable"]]
 collision_layer = 255
@@ -19,3 +27,8 @@ message = "Travel"
 [node name="PlayerSpawnPosition" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.10377)
 mesh = SubResource("BoxMesh_jwegy")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+layers = 2
+billboard = 1
+texture = SubResource("GradientTexture2D_nbq24")

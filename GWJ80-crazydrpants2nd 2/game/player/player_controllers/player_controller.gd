@@ -29,6 +29,7 @@ var hovering : bool = false
 var disabled : bool = false
 @export_category("Camera controls")
 @export var offset : Vector3 = Vector3(0.0, 1.5, 0.0)
+@export var mini_cam_offset : float = 15.0
 #@onready var look_at_target: Node3D = $"../LookAtTarget"
 @onready var camera_framing: Area3D = $SpringArm3D/Camera3D/CameraFraming
 @onready var camera_3d: Camera3D = $SpringArm3D/Camera3D
@@ -40,6 +41,8 @@ var reset_duration : float = 0.2
 var _target_rotation : Vector3 = Vector3.ZERO
 var reset_tween : Tween
 var reset_position_tween : Tween
+@export_subgroup("minimap")
+@onready var mini_map_cam: Camera3D = $CanvasLayer/ColorRect/SubViewportContainer/SubViewport/MiniMapCam
 @export_subgroup("Item Manipulation")
 var grabbing : interactable
 
@@ -77,6 +80,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	mini_map_cam.global_position = global_position + Vector3(0, mini_cam_offset, 0)
 	var current_speed : float = speed * current_dash_multiplier
 	if !dash_timer.is_stopped():
 		var duration_left_in_seconds : float = (dash_speed_multiplier - 1.0)/player.dash_duration

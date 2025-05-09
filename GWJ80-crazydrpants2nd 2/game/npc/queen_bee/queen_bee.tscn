@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=4 uid="uid://c5lgibd624wcy"]
+[gd_scene load_steps=38 format=4 uid="uid://c5lgibd624wcy"]
 
 [ext_resource type="PackedScene" uid="uid://88f70ly0w5b4" path="res://game/npc/master/npc.tscn" id="1_ealid"]
 [ext_resource type="Script" uid="uid://cwww23bvc3s81" path="res://game/npc/queen_bee/queen_bee.gd" id="2_0f0bj"]
@@ -553,6 +553,9 @@ _data = {
 &"idle": SubResource("Animation_6uirh")
 }
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_wum8w"]
+viewport_path = NodePath("SubViewport")
+
 [node name="QueenBee" instance=ExtResource("1_ealid")]
 script = ExtResource("2_0f0bj")
 
@@ -639,3 +642,8 @@ libraries = {
 }
 autoplay = "idle"
 speed_scale = 0.75
+
+[node name="MadtalkMaster" parent="." index="8"]
+texture = SubResource("ViewportTexture_wum8w")
+
+[editable path="MadtalkMaster"]

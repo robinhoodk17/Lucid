@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://dgaexk2mqn6j8"]
+[gd_scene load_steps=8 format=3 uid="uid://dgaexk2mqn6j8"]
 
 [ext_resource type="Script" uid="uid://ctk7duxndd7bf" path="res://game/player/player_ready.gd" id="1_8soms"]
 [ext_resource type="PackedScene" uid="uid://dlhyqkhdji50i" path="res://game/player/Butterfly.tscn" id="2_a4w0n"]
 [ext_resource type="Script" uid="uid://cb4ku2htwkhhc" path="res://game/player/interaction_detection.gd" id="3_5fytw"]
+[ext_resource type="Texture2D" uid="uid://cqkodldi0a28x" path="res://game/player/Textures/Butterfly_ButterflyTexture.jpg" id="4_a4w0n"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_y2f5q"]
 margin = 0.01
@@ -50,6 +51,12 @@ visible = false
 [node name="MeshInstance3D" type="MeshInstance3D" parent="playermodel/DashTrail"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.100723, 0.491023)
 mesh = SubResource("BoxMesh_8soms")
+
+[node name="Sprite3D" type="Sprite3D" parent="playermodel"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+layers = 2
+billboard = 1
+texture = ExtResource("4_a4w0n")
 
 [node name="TrailTimer" type="Timer" parent="."]
 one_shot = true

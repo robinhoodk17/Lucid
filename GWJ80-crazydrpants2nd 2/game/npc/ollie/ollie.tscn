@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=4 uid="uid://d362eya2ajhk1"]
+[gd_scene load_steps=34 format=4 uid="uid://d362eya2ajhk1"]
 
 [ext_resource type="PackedScene" uid="uid://88f70ly0w5b4" path="res://game/npc/master/npc.tscn" id="1_3y3ua"]
 [ext_resource type="Script" uid="uid://bmiaw4kcwmo2m" path="res://game/npc/ollie/ollie.gd" id="2_1f2qb"]
@@ -2238,6 +2238,9 @@ tracks/129/keys = PackedFloat32Array(0, 1, -0.58289, -0.58289, -0.400299, 0.4003
 _data = {
 &"idle": SubResource("Animation_x42py")
 }
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_wum8w"]
+viewport_path = NodePath("SubViewport")
 
 [node name="Ollie" node_paths=PackedStringArray("animation_player") instance=ExtResource("1_3y3ua")]
 script = ExtResource("2_1f2qb")
@@ -4483,3 +4486,8 @@ libraries = {
 &"": SubResource("AnimationLibrary_75spo")
 }
 autoplay = "idle"
+
+[node name="MadtalkMaster" parent="." index="8"]
+texture = SubResource("ViewportTexture_wum8w")
+
+[editable path="MadtalkMaster"]

@@ -1,0 +1,82 @@
+[gd_scene load_steps=6 format=3 uid="uid://cogoqe1xfcno"]
+
+[ext_resource type="Script" uid="uid://jritg85hqq0s" path="res://game/npc/master/madtalk_master.gd" id="1_4pkmh"]
+[ext_resource type="Script" uid="uid://c6av3xe4m2ujl" path="res://addons/madtalk/runtime/madtalk_runtime.gd" id="2_asxt8"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_asxt8"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vtn1m"]
+bg_color = Color(0, 0, 0, 0.392157)
+border_width_left = 3
+border_width_top = 10
+border_width_right = 3
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_vtn1m"]
+
+[node name="MadtalkMaster" type="Sprite3D" node_paths=PackedStringArray("popup_timer", "madtalk_manager", "madtalk_logic")]
+texture = SubResource("ViewportTexture_asxt8")
+script = ExtResource("1_4pkmh")
+popup_timer = NodePath("Timer")
+madtalk_manager = NodePath("Node")
+madtalk_logic = NodePath("MadtalkLogic")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(512, 412)
+
+[node name="Control" type="Control" parent="SubViewport"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="SubViewport/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vtn1m")
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/Control/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 30
+
+[node name="RichTextLabel" type="RichTextLabel" parent="SubViewport/Control/Panel/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "this is a long text bla bla bla bla bla bal alblabl ablaab la bla abl abla bal abl abla"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Node" type="Node" parent="."]
+script = ExtResource("2_asxt8")
+DialogMainControl = NodePath("../SubViewport/Control")
+DialogMessageBox = NodePath("../SubViewport/Control/Panel")
+DialogMessageLabel = NodePath("../SubViewport/Control/Panel/MarginContainer/RichTextLabel")
+
+[node name="MadtalkLogic" type="BTPlayer" parent="."]
+blackboard_plan = SubResource("BlackboardPlan_vtn1m")

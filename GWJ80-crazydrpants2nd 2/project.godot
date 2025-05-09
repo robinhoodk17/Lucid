@@ -31,6 +31,7 @@ Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
 LoadingScreen="*res://ui/loading_screen.tscn"
 Global="*res://global.gd"
 Ui="*res://ui/ui.tscn"
+MadTalkGlobals="*res://addons/madtalk/runtime/MadTalkGlobals.tscn"
 
 [debug]
 
@@ -232,7 +233,7 @@ naming/script_name_casing=2
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/dialogic/plugin.cfg", "res://addons/gdUnit4/plugin.cfg", "res://addons/guide/plugin.cfg", "res://addons/maaacks_ui_sound_controller/plugin.cfg")
+enabled=PackedStringArray("res://addons/dialogic/plugin.cfg", "res://addons/gdUnit4/plugin.cfg", "res://addons/guide/plugin.cfg", "res://addons/maaacks_ui_sound_controller/plugin.cfg", "res://addons/madtalk/plugin.cfg")
 
 [file_customization]
 
@@ -327,6 +328,8 @@ hover={
 
 [layer_names]
 
+3d_render/layer_1="general"
+3d_render/layer_2="minimap_sprite"
 3d_physics/layer_1="General"
 3d_physics/layer_2="Player"
 3d_physics/layer_3="NPC"

@@ -1,0 +1,25 @@
+[gd_resource type="BehaviorTree" load_steps=8 format=3 uid="uid://rbyjkyaojkis"]
+
+[ext_resource type="Script" uid="uid://ds4vtyfbfg7qt" path="res://addons/limboai/ai/tasks/time_period.gd" id="1_sume2"]
+[ext_resource type="Script" uid="uid://swj2dso4mk8x" path="res://addons/limboai/ai/tasks/start_dialogic.gd" id="2_yt0gh"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_8a7t5"]
+
+[sub_resource type="BTCondition" id="BTCondition_7wm03"]
+script = ExtResource("1_sume2")
+early = 0.0
+late = 1800.0
+
+[sub_resource type="BTAction" id="BTAction_u4u0m"]
+script = ExtResource("2_yt0gh")
+timeline = "albert_trial"
+
+[sub_resource type="BTSequence" id="BTSequence_iqb3u"]
+children = [SubResource("BTCondition_7wm03"), SubResource("BTAction_u4u0m")]
+
+[sub_resource type="BTSelector" id="BTSelector_uvhuf"]
+children = [SubResource("BTSequence_iqb3u")]
+
+[resource]
+blackboard_plan = SubResource("BlackboardPlan_8a7t5")
+root_task = SubResource("BTSelector_uvhuf")
