@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://kng2bc4sswh1"]
+[gd_scene load_steps=7 format=3 uid="uid://kng2bc4sswh1"]
 
 [ext_resource type="PackedScene" uid="uid://88f70ly0w5b4" path="res://game/npc/master/npc.tscn" id="1_mxs6a"]
 [ext_resource type="Script" uid="uid://dgyoiuqw5nnri" path="res://game/npc/barry/barry.gd" id="2_gjqdf"]
@@ -8,6 +8,9 @@
 
 [sub_resource type="BehaviorTree" id="BehaviorTree_mxs6a"]
 blackboard_plan = SubResource("BlackboardPlan_gjqdf")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_wum8w"]
+viewport_path = NodePath("SubViewport")
 
 [node name="Barry" instance=ExtResource("1_mxs6a")]
 script = ExtResource("2_gjqdf")
@@ -231,4 +234,8 @@ transform = Transform3D(0.0678855, 0.000829174, -0.000175226, -0.000839463, 0.06
 [node name="Dialogic" parent="." index="7"]
 behavior_tree = SubResource("BehaviorTree_mxs6a")
 
+[node name="MadtalkMaster" parent="." index="8"]
+texture = SubResource("ViewportTexture_wum8w")
+
 [editable path="ant"]
+[editable path="MadtalkMaster"]

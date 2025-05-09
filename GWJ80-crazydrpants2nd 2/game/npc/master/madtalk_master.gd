@@ -16,13 +16,12 @@ func _ready() -> void:
 	hide()
 
 func start_popup() -> void:
-	if MadTalkGlobals.is_during_dialog:
+	if visible:
 		print_debug("is during dialogue")
 		return
 	madtalk_logic.update(.01)
 
 func start_dialogue(sheet_id) -> void:
-	print_debug(get_parent().name, " started")
 	show()
 	madtalk_manager.start_dialog(sheet_id)
 	popup_timer.start(Globals.popup_duration)
@@ -36,6 +35,8 @@ func advance() -> void:
 		madtalk_manager.dialog_acknowledge()
 	if MadTalkGlobals.is_during_dialog:
 		popup_timer.start(Globals.popup_duration)
+		return
+	hide()
 
 func save() -> void:
 	var save_path = str(SAVE_GAME_PATH, get_parent().name,"madtalk.tres")

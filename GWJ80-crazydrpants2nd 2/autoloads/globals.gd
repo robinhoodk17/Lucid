@@ -49,7 +49,7 @@ var naughty_quests : int = 0
 var nice_quests : int = 0
 #How many physics ticks pass between refreshing the position of items
 var item_refresh_rate : int = 5
-var popup_duration : float = 5.0
+var popup_duration : float = 4.0
 var sensitivity : float = 1.0
 
 func _ready() -> void:

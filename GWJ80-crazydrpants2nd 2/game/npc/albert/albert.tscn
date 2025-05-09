@@ -11,7 +11,7 @@
 size = Vector3(0.4, 0.2, 0.555)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_72gjd"]
-viewport_path = NodePath("MadtalkMaster/SubViewport")
+viewport_path = NodePath("SubViewport")
 
 [node name="Albert" instance=ExtResource("1_s0fck")]
 script = ExtResource("2_iu43e")

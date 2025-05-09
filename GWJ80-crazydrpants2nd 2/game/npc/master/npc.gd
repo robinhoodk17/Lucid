@@ -80,7 +80,7 @@ func start_walking() -> void:
 		animation_player.play("walk")
 	if animation_player.has_animation("Walk"):
 		animation_player.play("Walk")
-
+	madtalk_master_node.abort_dialogue()
 	var candidate_time : float = 6000
 	for i : float in moving_times.keys():
 		if i < candidate_time and i > Globals.current_time and i != current_event:
@@ -135,6 +135,7 @@ func start_dialogue(timeline : String) -> void:
 		Dialogic.process_mode = Node.PROCESS_MODE_ALWAYS
 		@warning_ignore("untyped_declaration")
 		Dialogic.timeline_ended.connect(func():player_control.reenable())
+		madtalk_master_node.abort_dialogue()
 	#get_tree().paused = true
 	#Global.playing = false
 	
